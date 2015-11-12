@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { pushState } from 'redux-router';
 
 import { fetchPurposes } from 'actions/purposeActions';
-import { searchResources } from 'actions/searchActions';
+import { getTypeaheadSuggestions, searchResources } from 'actions/searchActions';
 import DateHeader from 'components/common/DateHeader';
 import SearchFilters from 'components/search/SearchFilters';
 import SearchInput from 'components/search/SearchInput';
@@ -18,6 +18,7 @@ export class UnconnectedSearchControls extends Component {
     super(props);
     this.state = this.props.filters;
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
     this.onFiltersChange = this.onFiltersChange.bind(this);
   }
 
@@ -25,9 +26,9 @@ export class UnconnectedSearchControls extends Component {
     this.props.actions.fetchPurposes();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(nextProps.filters);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState(nextProps.filters);
+  // }
 
   onFiltersChange(newFilters) {
     this.setState(newFilters);
@@ -47,19 +48,29 @@ export class UnconnectedSearchControls extends Component {
     actions.searchResources(fetchParams);
   }
 
+  handleSearchInputChange(value) {
+    // this.setState({ search: value });
+    this.onFiltersChange({ search: value });
+    this.props.actions.getTypeaheadSuggestions({ full: true, input: value });
+  }
+
   render() {
     const {
+      actions,
       filters,
       isFetchingPurposes,
       purposeOptions,
+      typeaheadOptions,
     } = this.props;
 
     return (
       <div>
         <SearchInput
           autoFocus={!Boolean(filters.purpose)}
-          onChange={(searchValue) => this.onFiltersChange({ search: searchValue })}
+          onChange={(value) => this.handleSearchInputChange(value)}
           onSubmit={this.handleSearch}
+          pushState={actions.pushState}
+          typeaheadOptions={typeaheadOptions}
           value={this.state.search}
         />
         <Panel
@@ -104,11 +115,13 @@ UnconnectedSearchControls.propTypes = {
   filters: PropTypes.object.isRequired,
   isFetchingPurposes: PropTypes.bool.isRequired,
   purposeOptions: PropTypes.array.isRequired,
+  typeaheadOptions: PropTypes.array.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchPurposes,
+    getTypeaheadSuggestions,
     pushState,
     searchResources,
   };
