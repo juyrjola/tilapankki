@@ -7,6 +7,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 let finalCreateStore;
 const storeEnhancers = [applyMiddleware(apiMiddleware)];
 
+const __DEVTOOLS__ = true;
+
 if (isDevelopment) {
   const createLogger = require('redux-logger');
   const loggerMiddleware = createLogger();

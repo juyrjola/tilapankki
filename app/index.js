@@ -33,6 +33,8 @@ render(
   document.getElementById('root')
 );
 
+const __DEVTOOLS__ = true;
+
 if (__DEVTOOLS__) {
   require('./createDevToolsWindow')(store);
 }
