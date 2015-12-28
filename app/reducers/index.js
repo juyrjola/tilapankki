@@ -9,6 +9,7 @@ import notificationsReducer from 'reducers/notificationsReducer';
 import reservationReducer from 'reducers/reservationReducer';
 import searchReducer from 'reducers/searchReducer';
 import shouldFetchReducer from 'reducers/shouldFetchReducer';
+import myReducer from 'reducers/my_reducer';
 
 const rootReducer = combineReducers({
   api: combineReducers({
@@ -22,8 +23,9 @@ const rootReducer = combineReducers({
   ui: combineReducers({
     modals: modalsReducer,
     reservation: reservationReducer,
-    search: searchReducer,
+    search: searchReducer
   }),
+  red: myReducer
 });
 
 export default rootReducer;

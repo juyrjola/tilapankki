@@ -1,4 +1,7 @@
 export default {
+  RED: {
+    REDUCING: 'I reduce'
+  },
   API: {
     PURPOSES_GET_ERROR: 'PURPOSES_GET_ERROR',
     PURPOSES_GET_REQUEST: 'PURPOSES_GET_REQUEST',
