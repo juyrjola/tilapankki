@@ -9,6 +9,8 @@ import NotFoundPage from 'containers/NotFoundPage';
 import ReservationPage from 'containers/ReservationPage';
 import ResourcePage from 'containers/ResourcePage';
 import SearchPage from 'containers/SearchPage';
+import TilaPankki from 'containers/TilaPankki';
+import HelloPage from 'containers/Hello';
 
 export default (params) => {
   function removeFacebookAppendedHash(nextState, replaceState, cb) {
@@ -37,16 +39,8 @@ export default (params) => {
   }
 
   return (
-    <Route component={App} onEnter={removeFacebookAppendedHash}>
-      <Route onEnter={requireAuth}>
-        <Route component={UserReservationsPage} path="/my-reservations" />
-      </Route>
-      <Route component={HomePage} onEnter={scrollTop} path="/" />
-      <Route component={AboutPage} onEnter={scrollTop} path="/about" />
-      <Route component={ResourcePage} onEnter={scrollTop} path="/resources/:id" />
-      <Route component={ReservationPage} path="/resources/:id/reservation" />
-      <Route component={SearchPage} path="/search" />
-      <Route component={NotFoundPage} path="*" />
+    <Route component={TilaPankki}>
+      <Route component={HelloPage} onEnter={scrollTop} path="/" />
     </Route>
   );
 };

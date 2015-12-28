@@ -19,13 +19,13 @@ module.exports = merge(common, {
     publicPath: '/',
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        include: path.resolve(__dirname, '../app'),
-        loader: 'eslint',
-      },
-    ],
+    //preLoaders: [
+    //  {
+    //    test: /\.js$/,
+    //    include: path.resolve(__dirname, '../app'),
+    //    loader: 'eslint',
+    //  },
+    //],
     loaders: [
       {
         test: /\.js$/,
