@@ -9,7 +9,7 @@ import NotFoundPage from 'containers/NotFoundPage';
 import ReservationPage from 'containers/ReservationPage';
 import ResourcePage from 'containers/ResourcePage';
 import SearchPage from 'containers/SearchPage';
-import TilaPankki from 'containers/TilaPankki';
+import VicinityApp from 'containers/VicinityApp';
 import HelloPage from 'containers/Hello';
 
 export default (params) => {
@@ -39,7 +39,7 @@ export default (params) => {
   }
 
   return (
-    <Route component={TilaPankki}>
+    <Route component={VicinityApp}>
       <Route component={HelloPage} onEnter={scrollTop} path="/" />
     </Route>
   );
