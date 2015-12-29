@@ -1,11 +1,12 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import { apiMiddleware } from 'redux-api-middleware';
+import thunkMiddleware from 'redux-thunk';
 
 import rootReducer from 'reducers/index';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 let finalCreateStore;
-const storeEnhancers = [applyMiddleware(apiMiddleware)];
+const storeEnhancers = [applyMiddleware(thunkMiddleware), applyMiddleware(apiMiddleware)];
 
 if (isDevelopment) {
   const createLogger = require('redux-logger');
