@@ -118,19 +118,6 @@ export class UnconnectedReservationForm extends Component {
 
     return (
       <div>
-        <DatePicker
-          date={date}
-          hideFooter
-          gotoSelectedText="Mene valittuun"
-          onChange={this.onDateChange}
-          style={{ height: 210 }}
-          todayText="Tänään"
-        />
-        <DateHeader
-          date={date}
-          onChange={this.onDateChange}
-          scrollTo={urlHash === '#date-header'}
-        />
         <TimeSlots
           addNotification={actions.addNotification}
           isEditing={isEditing}

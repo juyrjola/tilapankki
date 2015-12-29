@@ -10,6 +10,7 @@ import ReservationPage from 'containers/ReservationPage';
 import ResourcePage from 'containers/ResourcePage';
 import SearchPage from 'containers/SearchPage';
 import VicinityApp from 'containers/VicinityApp';
+import VinicityReservationPage from 'containers/VinicityReservationPage';
 import HelloPage from 'containers/Hello';
 import ResourcesList from 'containers/ResourcesList';
 
@@ -42,6 +43,12 @@ export default (params) => {
   return (
     <Route component={VicinityApp}>
       <Route component={ResourcesList} onEnter={scrollTop} path="/" />
+      <Route component={AboutPage} onEnter={scrollTop} path="/about" />
+      <Route component={VinicityReservationPage} onEnter={scrollTop} path="/resources/:id" />
+      <Route component={ResourcePage} onEnter={scrollTop} path="/resources/:id" />
+      <Route component={ReservationPage} path="/resources/:id/reservation" />
+      <Route component={SearchPage} path="/search" />
+      <Route component={NotFoundPage} path="*" />
     </Route>
   );
 };

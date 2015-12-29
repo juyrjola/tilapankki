@@ -23,7 +23,7 @@ import {
 } from 'utils/DataUtils';
 import ImagePanel from 'components/common/ImagePanel';
 
-export class UnconnectedReservationPage extends Component {
+export class UnconnectedVinicityReservationPage extends Component {
   componentDidMount() {
     const { actions, date, id } = this.props;
     const fetchParams = getDateStartAndEndTimes(date);
@@ -95,7 +95,7 @@ export class UnconnectedReservationPage extends Component {
   }
 }
 
-UnconnectedReservationPage.propTypes = {
+UnconnectedVinicityReservationPage.propTypes = {
   actions: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
@@ -115,4 +115,15 @@ function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(actionCreators, dispatch) };
 }
 
-export default connect(reservationPageSelector, mapDispatchToProps)(UnconnectedReservationPage);
+import { createSelector } from 'reselect';
+
+const vinicityReservationPageSelector = createSelector(
+  reservationPageSelector,
+  (stuff) => {
+    console.log("stuff", stuff);
+    stuff.HIH = "jee";
+    return stuff
+  }
+);
+
+export default connect(vinicityReservationPageSelector, mapDispatchToProps)(UnconnectedVinicityReservationPage);
