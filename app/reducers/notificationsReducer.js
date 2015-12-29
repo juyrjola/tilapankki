@@ -90,6 +90,17 @@ function notificationsReducer(state = initialState, action) {
       timeOut: 10000,
     };
     return addNotification(state, notification);
+  case types.GEOLOCATION.ERROR:
+      message = action.error.message;
+      if (message == null || message.length < 1) {
+        message = 'Paikantaminen epäonnistui.';
+      }
+      notification = {
+        message: `${message} (${action.error.code})`,
+        type: 'error',
+        timeOut: 10000,
+      };
+      return addNotification(state, notification);
 
   default:
     return state;
