@@ -67,10 +67,6 @@ export class UnconnectedReservationPage extends Component {
                 Tilan tiedot
               </Button>
             </LinkContainer>
-            <ReservationInfo
-              isLoggedIn={isLoggedIn}
-              resource={resource}
-            />
             <h2 id="reservation-header">{isLoggedIn ? 'Varaa tila' : 'Varaustilanne'}</h2>
             <ReservationForm
               location={location}

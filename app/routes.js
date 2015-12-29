@@ -41,6 +41,11 @@ export default (params) => {
   return (
     <Route component={VicinityApp}>
       <Route component={HelloPage} onEnter={scrollTop} path="/" />
+      <Route component={AboutPage} onEnter={scrollTop} path="/about" />
+      <Route component={ResourcePage} onEnter={scrollTop} path="/resources/:id" />
+      <Route component={ReservationPage} path="/resources/:id/reservation" />
+      <Route component={SearchPage} path="/search" />
+      <Route component={NotFoundPage} path="*" />
     </Route>
   );
 };
