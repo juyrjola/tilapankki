@@ -11,6 +11,7 @@ import ResourcePage from 'containers/ResourcePage';
 import SearchPage from 'containers/SearchPage';
 import VicinityApp from 'containers/VicinityApp';
 import HelloPage from 'containers/Hello';
+import ResourcesList from 'containers/ResourcesList';
 
 export default (params) => {
   function removeFacebookAppendedHash(nextState, replaceState, cb) {
@@ -40,7 +41,7 @@ export default (params) => {
 
   return (
     <Route component={VicinityApp}>
-      <Route component={HelloPage} onEnter={scrollTop} path="/" />
+      <Route component={ResourcesList} onEnter={scrollTop} path="/" />
     </Route>
   );
 };
