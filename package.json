@@ -20,6 +20,7 @@
     "history": "^1.13.1",
     "humps": "^1.0.0",
     "isomorphic-fetch": "^2.2.0",
+    "leaflet": "^0.7.7",
     "location-origin": "^1.1.4",
     "lodash": "^3.10.1",
     "moment": "^2.10.3",

@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { fetchResource } from 'actions/resourceActions';
 import ResourceHeader from 'components/resource/ResourceHeader';
 import ReservationInfo from 'components/reservation/ReservationInfo';
+import OneShotMap from 'containers/OneShotMap';
 import NotFoundPage from 'containers/NotFoundPage';
 import ReservationForm from 'containers/ReservationForm';
 import reservationPageSelector from 'selectors/containers/reservationPageSelector';
@@ -80,6 +81,7 @@ export class UnconnectedVinicityReservationPage extends Component {
               params={params}
             />
           </div>
+          <OneShotMap />
           <ImagePanel
             altText={`Kuva ${resourceName} tilasta`}
             images={resource.images || []}
