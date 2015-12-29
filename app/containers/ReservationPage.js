@@ -13,8 +13,15 @@ import ReservationInfo from 'components/reservation/ReservationInfo';
 import NotFoundPage from 'containers/NotFoundPage';
 import ReservationForm from 'containers/ReservationForm';
 import reservationPageSelector from 'selectors/containers/reservationPageSelector';
-import { getAddressWithName, getName } from 'utils/DataUtils';
 import { getDateStartAndEndTimes } from 'utils/TimeUtils';
+import ResourceDetails from 'components/resource/ResourceDetails';
+import {
+  getAddressWithName,
+  getDescription,
+  getName,
+  getPeopleCapacityString,
+} from 'utils/DataUtils';
+import ImagePanel from 'components/common/ImagePanel';
 
 export class UnconnectedReservationPage extends Component {
   componentDidMount() {
@@ -73,6 +80,15 @@ export class UnconnectedReservationPage extends Component {
               params={params}
             />
           </div>
+          <ImagePanel
+            altText={`Kuva ${resourceName} tilasta`}
+            images={resource.images || []}
+          />
+          <ResourceDetails
+            capacityString={getPeopleCapacityString(resource.peopleCapacity)}
+            description={getDescription(resource)}
+            type={getName(resource.type)}
+          />
         </Loader>
       </DocumentTitle>
     );
