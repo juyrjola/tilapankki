@@ -42,6 +42,7 @@ export class UnconnectedVinicityReservationPage extends Component {
   }
 
   render() {
+    console.log("Reduxed container", this, this.context.store.getState());
     const {
       date,
       id,
@@ -109,6 +110,10 @@ UnconnectedVinicityReservationPage.propTypes = {
   unit: PropTypes.object.isRequired,
 };
 
+UnconnectedVinicityReservationPage.contextTypes = {
+  store: PropTypes.object
+};
+
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResource,
@@ -120,11 +125,21 @@ function mapDispatchToProps(dispatch) {
 import { createSelector } from 'reselect';
 
 const vinicityReservationPageSelector = createSelector(
+  function passthrough(state, props) {
+    /*
+    Passing through state and props as is
+    State is what is reduced
+    Props is what component had originally as props (from Router at this case)
+     */
+    return {state, props};
+  },
   reservationPageSelector,
-  (stuff) => {
-    console.log("stuff", stuff);
-    stuff.HIH = "jee";
-    return stuff
+  (pristine, selected) => {
+    /*
+    Getting both pristine and selected state + props
+     */
+    console.log("stuff", pristine, selected);
+    return selected;
   }
 );
 
