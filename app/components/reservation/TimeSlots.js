@@ -56,13 +56,19 @@ class TimeSlots extends Component {
   }
 
   render() {
-    console.log("in the space time continuum", this.context.store.getState(), this.context);
     const {
       resource,
       isFetching,
       slots,
     } = this.props;
-    console.log("in the space time continuum", this.context.store.getState(), this.context, slots);
+
+    let filtered_slots;
+    if (this.context.red) {
+      filtered_slots = filter(slots, filterSlot);
+    } else {
+      filtered_slots = slots;
+    }
+
     const isAdmin = resource.userPermissions.isAdmin;
 
     return (
@@ -83,7 +89,7 @@ class TimeSlots extends Component {
               </tr>
             </thead>
             <tbody>
-              {map(filter(slots, filterSlot), this.renderTimeSlot)}
+              {map(filtered_slots, this.renderTimeSlot)}
             </tbody>
           </Table>
         ) : (
