@@ -22,7 +22,6 @@ import {
   getPeopleCapacityString,
 } from 'utils/DataUtils';
 import ImagePanel from 'components/common/ImagePanel';
-
 export class UnconnectedReservationPage extends Component {
   componentDidMount() {
     const { actions, date, id } = this.props;
@@ -60,7 +59,7 @@ export class UnconnectedReservationPage extends Component {
     return (
       <DocumentTitle title={`${resourceName} varaaminen - Varaamo`}>
         <Loader loaded={!isEmpty(resource)}>
-          <div className="reservation-page"v>
+          <div className="reservation-page">
             <ResourceHeader
               address={getAddressWithName(unit)}
               name={resourceName}
