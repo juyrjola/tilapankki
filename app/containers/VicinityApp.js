@@ -6,16 +6,12 @@ import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
 
 import { clearSearchResults } from 'actions/searchActions';
-import { fetchGeolocation } from 'actions/geolocationActions';
 import Footer from 'components/layout/VicinityFooter';
 import Navbar from 'components/layout/VicinityNavBar';
 import Notifications from 'containers/Notifications';
 import appSelector from 'selectors/containers/appSelector';
 
 export class UnconnectedApp extends Component {
-  componentDidMount() {
-    this.props.actions.fetchGeolocation();
-  }
 
   render() {
     const {
@@ -56,7 +52,6 @@ UnconnectedApp.propTypes = {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     clearSearchResults,
-    fetchGeolocation,
     updatePath,
   };
 

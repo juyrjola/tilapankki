@@ -4,9 +4,12 @@ import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
+import { Table } from 'react-bootstrap';
 
 import { fetchResources } from 'actions/resourceActions';
 import { fetchUnits } from 'actions/unitActions';
+import { updateTime } from 'actions/timeActions';
+import { fetchGeolocation } from 'actions/geolocationActions';
 import ResourcesListItem from 'components/resource/ResourcesListItem';
 import resourcesListSelector from 'selectors/containers/resourcesListSelector';
 
@@ -17,8 +20,10 @@ export class UnconnectedResourcesList extends Component {
   }
 
   componentDidMount() {
+    this.props.actions.updateTime();
+    this.props.actions.fetchGeolocation();
     this.props.actions.fetchUnits();
-    this.props.actions.fetchResources({ isOwn: true });
+    this.props.actions.fetchResources();
   }
 
   renderResourcesListItem(resource) {
@@ -30,7 +35,9 @@ export class UnconnectedResourcesList extends Component {
 
     return (
       <ResourcesListItem
-        key={resource.url}
+        time={this.props.time}
+        position={this.props.position}
+        key={resource.id}
         resource={resource}
         updatePath={actions.updatePath}
         unit={unit}
@@ -40,18 +47,27 @@ export class UnconnectedResourcesList extends Component {
 
   render() {
     const {
+      isFetchingLocation,
       isFetchingResources,
       resources,
     } = this.props;
 
-    console.log("Resurssit: ", resources, typeof resources);
     return (
-      <Loader loaded={!isFetchingResources}>
+      <Loader loaded={!isFetchingResources && !isFetchingLocation}>
         {Object.keys(resources).length > 0 ? (
           <div>
-            <ul className="resources-list">
-              {map(resources, this.renderResourcesListItem)}
-            </ul>
+            <Table className="resources lined">
+              <thead>
+                <tr>
+                  <th colSpan="2">Tila</th>
+                  <th>Etäisyys</th>
+                  <th>Vapaata</th>
+                </tr>
+              </thead>
+              <tbody>
+                {map(resources, this.renderResourcesListItem)}
+              </tbody>
+            </Table>
           </div>
         ) : (
           <p>Vapaita tiloja ei valitettavasti löytynyt.</p>
@@ -62,7 +78,10 @@ export class UnconnectedResourcesList extends Component {
 }
 
 UnconnectedResourcesList.propTypes = {
+  time: PropTypes.object,
+  position: PropTypes.object,
   actions: PropTypes.object.isRequired,
+  isFetchingLocation: PropTypes.bool.isRequired,
   isFetchingResources: PropTypes.bool.isRequired,
   resources: PropTypes.object.isRequired,
   units: PropTypes.object.isRequired,
@@ -72,6 +91,8 @@ function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResources,
     fetchUnits,
+    fetchGeolocation,
+    updateTime,
     updatePath,
   };
 

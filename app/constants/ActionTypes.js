@@ -61,4 +61,7 @@ export default {
     DETECTED: 'GEOLOCATION_DETECTED',
     ERROR: 'GEOLOCATION_ERROR',
   },
+  TIME: {
+    UPDATE: 'UPDATE_TIME',
+  },
 };

@@ -11,6 +11,7 @@ import searchReducer from 'reducers/searchReducer';
 import shouldFetchReducer from 'reducers/shouldFetchReducer';
 import myReducer from 'reducers/my_reducer';
 import geolocationReducer from 'reducers/geolocationReducer';
+import timeReducer from 'reducers/timeReducer';
 
 const rootReducer = combineReducers({
   api: combineReducers({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   }),
   red: myReducer,
   geolocation: geolocationReducer,
+  time: timeReducer,
 });
 
 export default rootReducer;
