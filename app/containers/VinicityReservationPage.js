@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { fetchResource } from 'actions/resourceActions';
 import ResourceHeader from 'components/resource/ResourceHeader';
 import ReservationInfo from 'components/reservation/ReservationInfo';
+import OneShotMap from 'containers/OneShotMap';
 import NotFoundPage from 'containers/NotFoundPage';
 import ReservationForm from 'containers/ReservationForm';
 import reservationPageSelector from 'selectors/containers/reservationPageSelector';
@@ -24,6 +25,11 @@ import {
 import ImagePanel from 'components/common/ImagePanel';
 
 export class UnconnectedVinicityReservationPage extends Component {
+
+  getChildContext() {
+    return {red: this.props.red};
+  }
+
   componentDidMount() {
     const { actions, date, id } = this.props;
     const fetchParams = getDateStartAndEndTimes(date);
@@ -80,6 +86,7 @@ export class UnconnectedVinicityReservationPage extends Component {
               params={params}
             />
           </div>
+          <OneShotMap />
           <ImagePanel
             altText={`Kuva ${resourceName} tilasta`}
             images={resource.images || []}
@@ -107,6 +114,16 @@ UnconnectedVinicityReservationPage.propTypes = {
   unit: PropTypes.object.isRequired,
 };
 
+UnconnectedVinicityReservationPage.contextTypes = {
+  store: PropTypes.object
+};
+
+UnconnectedVinicityReservationPage.childContextTypes = {
+  store: PropTypes.object,
+  red: PropTypes.object
+};
+
+
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResource,
@@ -118,11 +135,21 @@ function mapDispatchToProps(dispatch) {
 import { createSelector } from 'reselect';
 
 const vinicityReservationPageSelector = createSelector(
+  function passthrough(state, props) {
+    /*
+    Passing through state and props as is
+    State is what is reduced
+    Props is what component had originally as props (from Router at this case)
+     */
+    return {state, props};
+  },
   reservationPageSelector,
-  (stuff) => {
-    console.log("stuff", stuff);
-    stuff.HIH = "jee";
-    return stuff
+  (pristine, selected) => {
+    /*
+    Getting both pristine and selected state + props
+     */
+    selected.red = {pristine};
+    return selected;
   }
 );
 

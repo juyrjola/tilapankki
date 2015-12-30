@@ -1,10 +1,18 @@
 import map from 'lodash/collection/map';
+import filter from 'lodash/collection/filter';
 import includes from 'lodash/collection/includes';
 import React, { Component, PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import Loader from 'react-loader';
+import moment from 'moment';
 
 import TimeSlot from 'components/reservation/TimeSlot';
+
+function filterSlot(slot) {
+  if (moment(slot.end) < moment()) return false;
+  else if (slot.reserved) return false;
+  else return true;
+}
 
 class TimeSlots extends Component {
   constructor(props) {
@@ -53,6 +61,14 @@ class TimeSlots extends Component {
       isFetching,
       slots,
     } = this.props;
+
+    let filtered_slots;
+    if (this.context.red) {
+      filtered_slots = filter(slots, filterSlot);
+    } else {
+      filtered_slots = slots;
+    }
+
     const isAdmin = resource.userPermissions.isAdmin;
 
     return (
@@ -73,7 +89,7 @@ class TimeSlots extends Component {
               </tr>
             </thead>
             <tbody>
-              {map(slots, this.renderTimeSlot)}
+              {map(filtered_slots, this.renderTimeSlot)}
             </tbody>
           </Table>
         ) : (
@@ -83,6 +99,11 @@ class TimeSlots extends Component {
     );
   }
 }
+
+TimeSlots.contextTypes = {
+  store: PropTypes.object,
+  red: PropTypes.object
+};
 
 TimeSlots.propTypes = {
   addNotification: PropTypes.func.isRequired,
