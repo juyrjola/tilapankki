@@ -1,10 +1,18 @@
 import map from 'lodash/collection/map';
+import filter from 'lodash/collection/filter';
 import includes from 'lodash/collection/includes';
 import React, { Component, PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import Loader from 'react-loader';
+import moment from 'moment';
 
 import TimeSlot from 'components/reservation/TimeSlot';
+
+function filterSlot(slot) {
+  if (moment(slot.end) < moment()) return false;
+  else if (slot.reserved) return false;
+  else return true;
+}
 
 class TimeSlots extends Component {
   constructor(props) {
@@ -54,6 +62,7 @@ class TimeSlots extends Component {
       isFetching,
       slots,
     } = this.props;
+    console.log("in the space time continuum", this.context.store.getState(), this.context, slots);
     const isAdmin = resource.userPermissions.isAdmin;
 
     return (
@@ -74,7 +83,7 @@ class TimeSlots extends Component {
               </tr>
             </thead>
             <tbody>
-              {map(slots, this.renderTimeSlot)}
+              {map(filter(slots, filterSlot), this.renderTimeSlot)}
             </tbody>
           </Table>
         ) : (
