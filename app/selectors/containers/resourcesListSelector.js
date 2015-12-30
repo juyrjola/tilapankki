@@ -6,30 +6,27 @@ import requestIsActiveSelectorFactory from 'selectors/factories/requestIsActiveS
 const resourcesSelector = (state) => state.data.resources;
 const unitsSelector = (state) => state.data.units;
 const timeSelector = (state) => state.time.time;
-const geolocationSelector = (state) => state.geolocation.position;
+const geolocationSelector = (state) => state.geolocation;
 
 const resourcesListSelector = createSelector(
-  requestIsActiveSelectorFactory(ActionTypes.GEOLOCATION.REQUEST),
   requestIsActiveSelectorFactory(ActionTypes.API.RESOURCES_GET_REQUEST),
   resourcesSelector,
   unitsSelector,
   timeSelector,
   geolocationSelector,
   (
-    isFetchingLocation,
     isFetchingResources,
     resources,
     units,
     time,
-    position,
+    geolocation,
   ) => {
     return {
-      isFetchingLocation,
       isFetchingResources,
       resources,
       units,
       time,
-      position,
+      geolocation,
     };
   }
 );

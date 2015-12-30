@@ -1,15 +1,13 @@
 import map from 'lodash/collection/map';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
+import { Grid, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
-import { Table } from 'react-bootstrap';
 
 import { fetchResources } from 'actions/resourceActions';
 import { fetchUnits } from 'actions/unitActions';
-import { updateTime } from 'actions/timeActions';
-import { fetchGeolocation } from 'actions/geolocationActions';
 import ResourcesListItem from 'components/resource/ResourcesListItem';
 import resourcesListSelector from 'selectors/containers/resourcesListSelector';
 
@@ -20,10 +18,18 @@ export class UnconnectedResourcesList extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.updateTime();
-    this.props.actions.fetchGeolocation();
-    this.props.actions.fetchUnits();
-    this.props.actions.fetchResources();
+    if (this.props.geolocation.status == "detected") {
+      this.props.actions.fetchUnits();
+      this.props.actions.fetchResources();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.geolocation.status == "requested"
+    && nextProps.geolocation.status == "detected") {
+      this.props.actions.fetchUnits();
+      this.props.actions.fetchResources();
+    }
   }
 
   renderResourcesListItem(resource) {
@@ -36,7 +42,7 @@ export class UnconnectedResourcesList extends Component {
     return (
       <ResourcesListItem
         time={this.props.time}
-        position={this.props.position}
+        position={this.props.geolocation.position}
         key={resource.id}
         resource={resource}
         updatePath={actions.updatePath}
@@ -47,41 +53,46 @@ export class UnconnectedResourcesList extends Component {
 
   render() {
     const {
-      isFetchingLocation,
       isFetchingResources,
       resources,
+      geolocation,
     } = this.props;
 
     return (
-      <Loader loaded={!isFetchingResources && !isFetchingLocation}>
-        {Object.keys(resources).length > 0 ? (
-          <div>
-            <Table className="resources lined">
-              <thead>
-                <tr>
-                  <th colSpan="2">Tila</th>
-                  <th>Etäisyys</th>
-                  <th>Vapaata</th>
-                </tr>
-              </thead>
-              <tbody>
-                {map(resources, this.renderResourcesListItem)}
-              </tbody>
-            </Table>
-          </div>
-        ) : (
-          <p>Vapaita tiloja ei valitettavasti löytynyt.</p>
+      <Grid>
+        {isFetchingResources ? (
+          <p>Haetaan lähimpiä vapaita tiloja...</p>
+        ) : (<p></p>
         )}
-      </Loader>
+        <Loader loaded={!isFetchingResources && geolocation.status == "detected"}>
+          {Object.keys(resources).length > 0 ? (
+            <div>
+              <Table className="resources lined">
+                <thead>
+                  <tr>
+                    <th colSpan="2">Tila</th>
+                    <th>Etäisyys</th>
+                    <th>Vapaata</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {map(resources, this.renderResourcesListItem)}
+                </tbody>
+              </Table>
+            </div>
+          ) : (
+            <p>Vapaita tiloja ei valitettavasti löytynyt.</p>
+          )}
+        </Loader>
+      </Grid>
     );
   }
 }
 
 UnconnectedResourcesList.propTypes = {
   time: PropTypes.object,
-  position: PropTypes.object,
+  geolocation: PropTypes.object,
   actions: PropTypes.object.isRequired,
-  isFetchingLocation: PropTypes.bool.isRequired,
   isFetchingResources: PropTypes.bool.isRequired,
   resources: PropTypes.object.isRequired,
   units: PropTypes.object.isRequired,
@@ -91,8 +102,6 @@ function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResources,
     fetchUnits,
-    fetchGeolocation,
-    updateTime,
     updatePath,
   };
 

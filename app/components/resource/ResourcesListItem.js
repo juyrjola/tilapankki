@@ -47,7 +47,7 @@ class ResourcesListItem extends Component {
   render() {
     const {
       time,
-      position,
+      geolocation,
       resource,
       unit,
     } = this.props;
@@ -94,7 +94,7 @@ class ResourcesListItem extends Component {
 
 ResourcesListItem.propTypes = {
   time: PropTypes.object,
-  position: PropTypes.object,
+  geolocation: PropTypes.object,
   updatePath: PropTypes.func.isRequired,
   resource: PropTypes.object.isRequired,
   unit: PropTypes.object.isRequired,
