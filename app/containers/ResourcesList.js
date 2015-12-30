@@ -44,7 +44,6 @@ export class UnconnectedResourcesList extends Component {
       resources,
     } = this.props;
 
-    console.log("Resurssit: ", resources, typeof resources);
     return (
       <Loader loaded={!isFetchingResources}>
         {Object.keys(resources).length > 0 ? (
