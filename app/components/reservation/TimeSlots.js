@@ -48,6 +48,7 @@ class TimeSlots extends Component {
   }
 
   render() {
+    console.log("in the space time continuum", this.context.store.getState(), this.context);
     const {
       resource,
       isFetching,
@@ -83,6 +84,11 @@ class TimeSlots extends Component {
     );
   }
 }
+
+TimeSlots.contextTypes = {
+  store: PropTypes.object,
+  red: PropTypes.object
+};
 
 TimeSlots.propTypes = {
   addNotification: PropTypes.func.isRequired,

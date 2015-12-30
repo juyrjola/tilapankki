@@ -25,6 +25,11 @@ import {
 import ImagePanel from 'components/common/ImagePanel';
 
 export class UnconnectedVinicityReservationPage extends Component {
+
+  getChildContext() {
+    return {red: this.props.red};
+  }
+
   componentDidMount() {
     const { actions, date, id } = this.props;
     const fetchParams = getDateStartAndEndTimes(date);
@@ -113,6 +118,12 @@ UnconnectedVinicityReservationPage.contextTypes = {
   store: PropTypes.object
 };
 
+UnconnectedVinicityReservationPage.childContextTypes = {
+  store: PropTypes.object,
+  red: PropTypes.object
+};
+
+
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResource,
@@ -137,6 +148,7 @@ const vinicityReservationPageSelector = createSelector(
     /*
     Getting both pristine and selected state + props
      */
+    selected.red = {pristine};
     return selected;
   }
 );
