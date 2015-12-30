@@ -22,12 +22,13 @@ const GEOLOCATION_PATH_OPTIONS = {
   color: '#222',
   weight: 2,
   opacity: 0.8,
-  fillOpacity: 0.5,
+  fillOpacity: 1.0,
 };
 
 export default class LeafletMap extends Component {
   componentDidMount() {
-    const { coordinates } = this.props;
+    console.log("mad props", this.props);
+    const { location, coordinates } = this.props;
     const map = Leaflet.map(MAP_CONTAINER_ID, {
       center: [coordinates.latitude, coordinates.longitude],
       zoom: 14,
@@ -39,9 +40,7 @@ export default class LeafletMap extends Component {
 
     const myIcon = Leaflet.icon(ICON_OPTIONS);
 
-    // TODO: replace with resource coordinates
-    const artificialLatLng = [coordinates.latitude - 0.0025, coordinates.longitude + 0.005];
-    Leaflet.marker(artificialLatLng, { icon: myIcon }).addTo(map)
+    Leaflet.marker([location.latitude, location.longitude], { icon: myIcon }).addTo(map)
       .bindPopup('I should be a link to the Service Map.');
 
     Leaflet.circle([coordinates.latitude, coordinates.longitude],
