@@ -13,7 +13,6 @@ const resourceMapPositionSelector = createSelector(
   locationSelector,
   positionSelector,
   (location, position) => {
-    console.log("loc pos", location, position);
     return {location, position};
   }
 );

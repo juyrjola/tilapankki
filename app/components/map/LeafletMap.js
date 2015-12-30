@@ -27,7 +27,6 @@ const GEOLOCATION_PATH_OPTIONS = {
 
 export default class LeafletMap extends Component {
   componentDidMount() {
-    console.log("mad props", this.props);
     const { location, coordinates } = this.props;
     const map = Leaflet.map(MAP_CONTAINER_ID, {
       center: [coordinates.latitude, coordinates.longitude],

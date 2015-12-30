@@ -42,7 +42,6 @@ export class UnconnectedVinicityReservationPage extends Component {
   }
 
   render() {
-    console.log("Reduxed container", this, this.context.store.getState());
     const {
       date,
       id,
@@ -138,7 +137,6 @@ const vinicityReservationPageSelector = createSelector(
     /*
     Getting both pristine and selected state + props
      */
-    console.log("stuff", pristine, selected);
     return selected;
   }
 );
