@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LeafletMap from 'components/map/LeafletMap';
-import positionSelector from 'selectors/containers/oneShotMapSelector.js';
+import resourceMapPositionSelector from 'selectors/containers/oneShotMapSelector.js';
 
 class OneShotMap extends Component {
   render() {
@@ -13,4 +13,4 @@ class OneShotMap extends Component {
   }
 }
 
-export default connect(positionSelector)(OneShotMap);
+export default connect(resourceMapPositionSelector)(OneShotMap);
