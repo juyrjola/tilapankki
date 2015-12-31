@@ -86,7 +86,7 @@ export class UnconnectedVinicityReservationPage extends Component {
               params={params}
             />
           </div>
-          <OneShotMap />
+          <OneShotMap params={params} />
           <ImagePanel
             altText={`Kuva ${resourceName} tilasta`}
             images={resource.images || []}

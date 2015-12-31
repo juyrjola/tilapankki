@@ -1,19 +1,26 @@
-
-import values from 'lodash/object/values';
 import { createSelector } from 'reselect';
+import resourceSelector from 'selectors/resourceSelector';
 
 const positionSelector = (state) => state.geolocation;
+const unitsSelector = (state) => state.data.units;
 
-const locationSelector = (state, props) => {
-  let [longitude, latitude] = values(state.data.units)[0].location.coordinates;
-  return {latitude, longitude};
-};
+const unitSelector = createSelector(
+  resourceSelector,
+  unitsSelector,
+  (resource, units) => {
+    return {
+      unit: units[resource.unit],
+    };
+  }
+);
 
 const resourceMapPositionSelector = createSelector(
-  locationSelector,
   positionSelector,
-  (location, position) => {
-    return {location, position};
+  unitSelector,
+  (userPosition, { unit }) => {
+    const [longitude, latitude] = unit.location.coordinates;
+    const unitLocation = { longitude, latitude };
+    return { unitLocation, userPosition };
   }
 );
 

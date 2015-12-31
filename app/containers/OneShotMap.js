@@ -5,13 +5,13 @@ import resourceMapPositionSelector from 'selectors/containers/oneShotMapSelector
 
 class OneShotMap extends Component {
   render() {
-    const { location, position } = this.props;
+    const { userPosition, unitLocation } = this.props;
 
-    if (position.status !== 'detected') {
+    if (userPosition.status !== 'detected') {
       return null;
     }
 
-    return (<LeafletMap location={location} coordinates={position.position.coords} />);
+    return (<LeafletMap userLocation={userPosition.position.coords} unitLocation={unitLocation} />);
   }
 }
 

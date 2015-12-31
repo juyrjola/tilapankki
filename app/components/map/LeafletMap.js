@@ -23,35 +23,48 @@ const GEOLOCATION_PATH_OPTIONS = {
   weight: 2,
   opacity: 0.8,
   fillOpacity: 1.0,
+  radius: 5,
 };
+
+const DEFAULT_ICON = Leaflet.icon(ICON_OPTIONS);
 
 export default class LeafletMap extends Component {
   componentDidMount() {
-    const { location, coordinates } = this.props;
-    const map = Leaflet.map(MAP_CONTAINER_ID, {
-      center: [coordinates.latitude, coordinates.longitude],
-      zoom: 14,
-    });
+    this.map = Leaflet.map(MAP_CONTAINER_ID);
 
     Leaflet.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    }).addTo(this.map);
 
-    const myIcon = Leaflet.icon(ICON_OPTIONS);
+    const { unitLocation, userLocation } = this.props;
+    this.group = Leaflet.layerGroup();
+    this.drawMapContents(unitLocation, userLocation);
+  }
 
-    Leaflet.marker([location.latitude, location.longitude], { icon: myIcon }).addTo(map)
-      .bindPopup('I should be a link to the Service Map.');
+  componentDidUpdate(props) {
+    const { unitLocation, userLocation } = props;
+    this.drawMapContents(unitLocation, userLocation);
+  }
 
-    Leaflet.circle([coordinates.latitude, coordinates.longitude],
-                   25, GEOLOCATION_PATH_OPTIONS)
-      .addTo(map)
-      .bindPopup('You are here.');
+  drawMapContents(unitLocation, userLocation) {
+    this.group.clearLayers();
+    const marker = Leaflet.marker([unitLocation.latitude, unitLocation.longitude], { icon: DEFAULT_ICON });
+    const circle = Leaflet.circleMarker([userLocation.latitude, userLocation.longitude],
+                                GEOLOCATION_PATH_OPTIONS);
+    this.group.addLayer(marker);
+    this.group.addLayer(circle);
+    const bounds = Leaflet.latLngBounds([marker.getLatLng(), circle.getLatLng()]);
+
+    marker.bindPopup('I should be a link to the Service Map.');
+    circle.bindPopup('You are here.');
+    this.group.addTo(this.map);
+    this.map.fitBounds(bounds, { padding: [10, 10] });
   }
 
   render() {
     const style = {
       width: '100%',
-      height: '200px',
+      height: '300px',
       margin: '20px 0',
     };
     return <div id={MAP_CONTAINER_ID} style={style} />;
