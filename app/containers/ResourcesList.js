@@ -12,8 +12,6 @@ import ResourcesListItem from 'components/resource/ResourcesListItem';
 import resourcesListSelector from 'selectors/containers/resourcesListSelector';
 import moment from 'moment';
 
-import { TIME_FORMAT } from 'constants/AppConstants';
-
 export class UnconnectedResourcesList extends Component {
   constructor(props) {
     super(props);
@@ -21,14 +19,14 @@ export class UnconnectedResourcesList extends Component {
   }
 
   componentDidMount() {
-    if (this.props.geolocation.status == "detected") {
+    if (this.props.geolocation.status === 'detected') {
       this.fetchRequiredResources();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.geolocation.status == "requested"
-    && nextProps.geolocation.status == "detected") {
+    if (this.props.geolocation.status === 'requested'
+    && nextProps.geolocation.status === 'detected') {
       this.fetchRequiredResources();
     }
   }
@@ -79,7 +77,7 @@ export class UnconnectedResourcesList extends Component {
           <p>Haetaan lähimpiä vapaita tiloja...</p>
         ) : (<p></p>
         )}
-        <Loader loaded={!isFetchingResources && geolocation.status == "detected"}>
+        <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
             <div>
               <Table className="resources lined">
