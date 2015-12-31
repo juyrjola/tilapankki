@@ -54,7 +54,7 @@ class ResourcesListItem extends Component {
 
     const nameSeparator = isEmpty(resource) || isEmpty(unit) ? '' : ',';
     const availableTime = getAvailableTime(getOpeningHours(resource), resource.reservations);
-    const distance = "0";
+    const distance = resource.distance;
 
     return (
       <tr>
