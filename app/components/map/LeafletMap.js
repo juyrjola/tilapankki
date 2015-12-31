@@ -47,7 +47,6 @@ export default class LeafletMap extends Component {
   }
 
   drawMapContents(marks) {
-
     this.group.clearLayers();
 
     const markers = marks.map((mark) => {
@@ -57,12 +56,12 @@ export default class LeafletMap extends Component {
         case 'userpos':
           marker = Leaflet.circleMarker([mark.coords.latitude, mark.coords.longitude],
             GEOLOCATION_PATH_OPTIONS);
-          marker.bindPopup('I should be a link to the Service Map.');
+          marker.bindPopup(mark.msg);
           break;
 
         case 'marker':
           marker = Leaflet.marker([mark.coords.latitude, mark.coords.longitude], { icon: DEFAULT_ICON });
-          marker.bindPopup('You are here.');
+          marker.bindPopup(mark.msg);
           break;
       }
 
@@ -70,7 +69,7 @@ export default class LeafletMap extends Component {
       return marker;
 
     });
-    console.log("marking", markers);
+
     const bounds = Leaflet.latLngBounds(markers.map(marker => marker.getLatLng()));
 
     this.group.addTo(this.map);
