@@ -2,7 +2,7 @@ import isEmpty from 'lodash/lang/isEmpty';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Label } from 'react-bootstrap';
+import { Label, ListGroupItem } from 'react-bootstrap';
 
 import TimeRange from 'components/common/TimeRange';
 import {
@@ -38,7 +38,7 @@ class ResourcesListItem extends Component {
 
   renderImage(image) {
     if (image && image.url) {
-      const src = `${image.url}?dim=100x100`;
+      const src = `${image.url}?dim=40x40`;
       return <img alt={getCaption(image)} src={src} />;
     }
     return null;
@@ -55,39 +55,18 @@ class ResourcesListItem extends Component {
     const nameSeparator = isEmpty(resource) || isEmpty(unit) ? '' : ',';
     const availableTime = getAvailableTime(getOpeningHours(resource), resource.reservations);
     const distance = "0";
+    const link = `/resources/${resource.id}`
 
     return (
-      <tr>
-        <td style={{ height: '80px', width: '80px' }}>
-          <Link
-            to={`/resources/${resource.id}`}
-          >
-            {this.renderImage(getMainImage(resource.images))}
-          </Link>
-        </td>
-        <td>
-          <Link
-            to={`/resources/${resource.id}`}
-          >
-            <h4>{getName(resource)}</h4>
-            <div className="unit-name">{getName(unit)}</div>
-          </Link>
-        </td>
-        <td className="distance">
-          <Link
-            to={`/resources/${resource.id}`}
-          >
-            {this.renderDistance(distance)}
-          </Link>
-        </td>
-        <td className="available-time">
-          <Link
-            to={`/resources/${resource.id}/`}
-          >
-            {this.renderAvailableTime(availableTime)}
-          </Link>
-        </td>
-      </tr>
+      <ListGroupItem href={link}>
+        <h4>{getName(resource)}</h4>
+        <div className="unit-name"><p>
+          {this.renderImage(getMainImage(resource.images))}
+          {getName(unit)}
+          {this.renderDistance(distance)}
+          {this.renderAvailableTime(availableTime)}
+        </p></div>
+      </ListGroupItem>
     );
   }
 }

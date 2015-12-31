@@ -1,7 +1,7 @@
 import map from 'lodash/collection/map';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
-import { Grid, Table } from 'react-bootstrap';
+import { Grid, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
@@ -66,23 +66,14 @@ export class UnconnectedResourcesList extends Component {
         )}
         <Loader loaded={!isFetchingResources && geolocation.status == "detected"}>
           {Object.keys(resources).length > 0 ? (
-            <div>
-              <Table className="resources lined">
-                <thead>
-                  <tr>
-                    <th colSpan="2">Tila</th>
-                    <th>Etäisyys</th>
-                    <th>Vapaata</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {map(resources, this.renderResourcesListItem)}
-                </tbody>
-              </Table>
-            </div>
+            <ListGroup fill>
+              {map(resources, this.renderResourcesListItem)}
+            </ListGroup>
           ) : (
-            <p>Vapaita tiloja ei valitettavasti löytynyt.</p>
-          )}
+            <ListGroup fill>
+              <ListGroupItem>Vapaita tiloja ei valitettavasti löytynyt.</ListGroupItem>
+            </ListGroup>
+        )}
         </Loader>
       </Grid>
     );
