@@ -41,7 +41,7 @@ export class UnconnectedApp extends Component {
               <Notifications />
               {geolocationStatus == "requested" ? (
                 <p>Haetaan sijaintiasi...</p>
-              ) : (<span></span>
+              ) : (<span />
               )}
               <Loader loaded={geolocationStatus == "detected"}>
                 {children}

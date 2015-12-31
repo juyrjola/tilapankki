@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { Label, ListGroupItem, Grid, Row, Col } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { humanDistance } from 'utils/DataUtils';
 
 import TimeRange from 'components/common/TimeRange';
@@ -70,20 +71,22 @@ class ResourcesListItem extends Component {
     }
 
     return (
-      <ListGroupItem href={link}>
-        <h4>{getName(resource)}</h4>
-        <Grid>
-          <Row>
-            <Col xs={9}>
-              <Row>{getName(unit)}</Row>
-              <Row>{this.renderDistance(distance)} {this.renderAvailableTime(availableTime)}</Row>
-            </Col>
-            <Col xs={3}>
-              {this.renderImage(getMainImage(resource.images))}
-            </Col>
-          </Row>
-        </Grid>
-      </ListGroupItem>
+      <LinkContainer to={link}>
+        <ListGroupItem>
+          <h4>{getName(resource)}</h4>
+          <Grid>
+            <Row>
+              <Col xs={9}>
+                <Row>{getName(unit)}</Row>
+                <Row>{this.renderDistance(distance)} {this.renderAvailableTime(availableTime)}</Row>
+              </Col>
+              <Col xs={3}>
+                {this.renderImage(getMainImage(resource.images))}
+              </Col>
+            </Row>
+          </Grid>
+        </ListGroupItem>
+      </LinkContainer>
     );
   }
 }
