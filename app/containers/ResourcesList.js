@@ -94,7 +94,7 @@ export class UnconnectedResourcesList extends Component {
 }
 
 UnconnectedResourcesList.propTypes = {
-  time: PropTypes.object,
+  time: PropTypes.string,
   geolocation: PropTypes.object,
   actions: PropTypes.object.isRequired,
   isFetchingResources: PropTypes.bool.isRequired,

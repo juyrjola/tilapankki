@@ -81,7 +81,7 @@ class ResourcesListItem extends Component {
 }
 
 ResourcesListItem.propTypes = {
-  time: PropTypes.object,
+  time: PropTypes.string,
   geolocation: PropTypes.object,
   updatePath: PropTypes.func.isRequired,
   resource: PropTypes.object.isRequired,
