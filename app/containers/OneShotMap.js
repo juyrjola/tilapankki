@@ -11,7 +11,18 @@ class OneShotMap extends Component {
       return null;
     }
 
-    return (<LeafletMap userLocation={userPosition.position.coords} unitLocation={unitLocation} />);
+    const coords = [
+      {
+        coords: userPosition.position.coords,
+        type: 'userpos'
+      },
+      {
+        coords: unitLocation,
+        type: 'marker'
+      }
+    ];
+
+    return (<LeafletMap markers={coords} />);
   }
 }
 

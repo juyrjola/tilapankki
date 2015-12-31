@@ -36,29 +36,46 @@ export default class LeafletMap extends Component {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.map);
 
-    const { unitLocation, userLocation } = this.props;
+    const markers = this.props.markers;
     this.group = Leaflet.layerGroup();
-    this.drawMapContents(unitLocation, userLocation);
+    this.drawMapContents(markers);
   }
 
   componentDidUpdate(props) {
-    const { unitLocation, userLocation } = props;
-    this.drawMapContents(unitLocation, userLocation);
+    const markers = this.props.markers;
+    this.drawMapContents(markers);
   }
 
-  drawMapContents(unitLocation, userLocation) {
-    this.group.clearLayers();
-    const marker = Leaflet.marker([unitLocation.latitude, unitLocation.longitude], { icon: DEFAULT_ICON });
-    const circle = Leaflet.circleMarker([userLocation.latitude, userLocation.longitude],
-                                GEOLOCATION_PATH_OPTIONS);
-    this.group.addLayer(marker);
-    this.group.addLayer(circle);
-    const bounds = Leaflet.latLngBounds([marker.getLatLng(), circle.getLatLng()]);
+  drawMapContents(marks) {
 
-    marker.bindPopup('I should be a link to the Service Map.');
-    circle.bindPopup('You are here.');
+    this.group.clearLayers();
+
+    const markers = marks.map((mark) => {
+      let marker;
+      switch (mark.type) {
+
+        case 'userpos':
+          marker = Leaflet.circleMarker([mark.coords.latitude, mark.coords.longitude],
+            GEOLOCATION_PATH_OPTIONS);
+          marker.bindPopup('I should be a link to the Service Map.');
+          break;
+
+        case 'marker':
+          marker = Leaflet.marker([mark.coords.latitude, mark.coords.longitude], { icon: DEFAULT_ICON });
+          marker.bindPopup('You are here.');
+          break;
+      }
+
+      this.group.addLayer(marker);
+      return marker;
+
+    });
+    console.log("marking", markers);
+    const bounds = Leaflet.latLngBounds(markers.map(marker => marker.getLatLng()));
+
     this.group.addTo(this.map);
     this.map.fitBounds(bounds, { padding: [10, 10] });
+
   }
 
   render() {
