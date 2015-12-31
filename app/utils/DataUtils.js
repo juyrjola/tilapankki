@@ -20,6 +20,7 @@ export default {
   getOpeningHours,
   getPeopleCapacityString,
   getTranslatedProperty,
+  humanDistance,
 };
 
 function combineReservations(reservations) {
@@ -138,4 +139,18 @@ function getTranslatedProperty(item, property, language = 'fi') {
     return item[property][language];
   }
   return '';
+}
+
+function humanDistance(meters) {
+  if (meters === Number.MAX_VALUE) {
+    return '?';
+  } else if (meters < 1000) {
+    return '' + (Math.ceil(meters)) + 'm';
+  }
+  const val = Math.ceil(meters / 100).toString();
+  const [a, b] = val;//[val.slice(0, -1), val.slice(-1)];
+  if (b !== '0') {
+    return '' + a + '.' + b + 'km';
+  }
+  return '' + a + 'km';
 }

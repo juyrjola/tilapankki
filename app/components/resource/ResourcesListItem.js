@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { Label } from 'react-bootstrap';
+import { humanDistance } from 'utils/DataUtils';
 
 import TimeRange from 'components/common/TimeRange';
 import {
@@ -30,9 +31,17 @@ class ResourcesListItem extends Component {
   }
 
   renderDistance(distance) {
-    let bsStyle = 'success';
+    let bsStyle;
+    console.log(distance);
+    if (distance < 500) {
+      bsStyle = 'success';
+    } else if (distance < 1000) {
+      bsStyle = 'info';
+    } else {
+      bsStyle = 'warning';
+    }
     return (
-      <Label bsStyle={bsStyle}>{distance}</Label>
+      <Label bsStyle={bsStyle}>{humanDistance(distance)}</Label>
     );
   }
 
