@@ -2,7 +2,7 @@ import isEmpty from 'lodash/lang/isEmpty';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Label, ListGroupItem } from 'react-bootstrap';
+import { Label, ListGroupItem, Grid, Row, Col } from 'react-bootstrap';
 import { humanDistance } from 'utils/DataUtils';
 
 import TimeRange from 'components/common/TimeRange';
@@ -65,16 +65,24 @@ class ResourcesListItem extends Component {
     const availableTime = getAvailableTime(getOpeningHours(resource), resource.reservations);
     const link = `/resources/${resource.id}`
     const distance = resource.distance;
+    const inline = {
+      display: 'inline',
+    }
 
     return (
       <ListGroupItem href={link}>
         <h4>{getName(resource)}</h4>
-        <div className="unit-name"><p>
-          {this.renderImage(getMainImage(resource.images))}
-          {getName(unit)}
-          {this.renderDistance(distance)}
-          {this.renderAvailableTime(availableTime)}
-        </p></div>
+        <Grid>
+          <Row>
+            <Col xs={9}>
+              <Row>{getName(unit)}</Row>
+              <Row>{this.renderDistance(distance)} {this.renderAvailableTime(availableTime)}</Row>
+            </Col>
+            <Col xs={3}>
+              {this.renderImage(getMainImage(resource.images))}
+            </Col>
+          </Row>
+        </Grid>
       </ListGroupItem>
     );
   }
