@@ -10,6 +10,9 @@ import { fetchResources } from 'actions/resourceActions';
 import { fetchUnits } from 'actions/unitActions';
 import ResourcesListItem from 'components/resource/ResourcesListItem';
 import resourcesListSelector from 'selectors/containers/resourcesListSelector';
+import moment from 'moment';
+
+import { TIME_FORMAT } from 'constants/AppConstants';
 
 export class UnconnectedResourcesList extends Component {
   constructor(props) {
@@ -19,17 +22,29 @@ export class UnconnectedResourcesList extends Component {
 
   componentDidMount() {
     if (this.props.geolocation.status == "detected") {
-      this.props.actions.fetchUnits();
-      this.props.actions.fetchResources();
+      this.fetchRequiredResources();
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.geolocation.status == "requested"
     && nextProps.geolocation.status == "detected") {
-      this.props.actions.fetchUnits();
-      this.props.actions.fetchResources();
+      this.fetchRequiredResources();
     }
+  }
+
+  fetchRequiredResources() {
+    const { time, geolocation } = this.props;
+    this.props.actions.fetchUnits();
+    const params = {
+      start: time,
+      end: moment(time).add(3, 'hours').toISOString(),
+      duration: 30,
+      purpose: 'meetings-and-working',
+      lat: geolocation.position.coords.latitude,
+      lon: geolocation.position.coords.longitude,
+    };
+    this.props.actions.fetchResources(params);
   }
 
   renderResourcesListItem(resource) {
