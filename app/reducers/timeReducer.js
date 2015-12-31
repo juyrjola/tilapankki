@@ -11,8 +11,8 @@ export default function timeReducer(state = initialState, action) {
     case types.TIME.UPDATE:
       return state.merge({
         status: 'updated',
-        time: action.time,
-      });
+        time: action.time.toISOString(),
+       });
     default:
       return state;
   }

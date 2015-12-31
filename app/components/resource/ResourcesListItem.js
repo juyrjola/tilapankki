@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { Label, ListGroupItem } from 'react-bootstrap';
+import { humanDistance } from 'utils/DataUtils';
 
 import TimeRange from 'components/common/TimeRange';
 import {
@@ -30,9 +31,17 @@ class ResourcesListItem extends Component {
   }
 
   renderDistance(distance) {
-    let bsStyle = 'success';
+    let bsStyle;
+    console.log(distance);
+    if (distance < 500) {
+      bsStyle = 'success';
+    } else if (distance < 1000) {
+      bsStyle = 'info';
+    } else {
+      bsStyle = 'warning';
+    }
     return (
-      <Label bsStyle={bsStyle}>{distance}</Label>
+      <Label bsStyle={bsStyle}>{humanDistance(distance)}</Label>
     );
   }
 
@@ -54,8 +63,8 @@ class ResourcesListItem extends Component {
 
     const nameSeparator = isEmpty(resource) || isEmpty(unit) ? '' : ',';
     const availableTime = getAvailableTime(getOpeningHours(resource), resource.reservations);
-    const distance = "0";
     const link = `/resources/${resource.id}`
+    const distance = resource.distance;
 
     return (
       <ListGroupItem href={link}>

@@ -23,7 +23,7 @@ const GEOLOCATION_PATH_OPTIONS = {
   weight: 2,
   opacity: 0.8,
   fillOpacity: 1.0,
-  radius: 5,
+  radius: 8,
 };
 
 const DEFAULT_ICON = Leaflet.icon(ICON_OPTIONS);

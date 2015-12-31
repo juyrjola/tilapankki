@@ -10,6 +10,7 @@ import { fetchResources } from 'actions/resourceActions';
 import { fetchUnits } from 'actions/unitActions';
 import ResourcesListItem from 'components/resource/ResourcesListItem';
 import resourcesListSelector from 'selectors/containers/resourcesListSelector';
+import moment from 'moment';
 
 export class UnconnectedResourcesList extends Component {
   constructor(props) {
@@ -18,18 +19,30 @@ export class UnconnectedResourcesList extends Component {
   }
 
   componentDidMount() {
-    if (this.props.geolocation.status == "detected") {
-      this.props.actions.fetchUnits();
-      this.props.actions.fetchResources();
+    if (this.props.geolocation.status === 'detected') {
+      this.fetchRequiredResources();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.geolocation.status == "requested"
-    && nextProps.geolocation.status == "detected") {
-      this.props.actions.fetchUnits();
-      this.props.actions.fetchResources();
+    if (this.props.geolocation.status === 'requested'
+    && nextProps.geolocation.status === 'detected') {
+      this.fetchRequiredResources();
     }
+  }
+
+  fetchRequiredResources() {
+    const { time, geolocation } = this.props;
+    this.props.actions.fetchUnits();
+    const params = {
+      start: time,
+      end: moment(time).add(3, 'hours').toISOString(),
+      duration: 30,
+      purpose: 'meetings-and-working',
+      lat: geolocation.position.coords.latitude,
+      lon: geolocation.position.coords.longitude,
+    };
+    this.props.actions.fetchResources(params);
   }
 
   renderResourcesListItem(resource) {
@@ -64,7 +77,7 @@ export class UnconnectedResourcesList extends Component {
           <p>Haetaan lähimpiä vapaita tiloja...</p>
         ) : (<p></p>
         )}
-        <Loader loaded={!isFetchingResources && geolocation.status == "detected"}>
+        <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
             <ListGroup fill>
               {map(resources, this.renderResourcesListItem)}
