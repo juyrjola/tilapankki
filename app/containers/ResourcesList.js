@@ -72,10 +72,10 @@ export class UnconnectedResourcesList extends Component {
     } = this.props;
 
     return (
-      <Grid>
+      <div>
         {isFetchingResources ? (
           <p>Haetaan lähimpiä vapaita tiloja...</p>
-        ) : (<p></p>
+        ) : (<span />
         )}
         <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
@@ -88,7 +88,7 @@ export class UnconnectedResourcesList extends Component {
             </ListGroup>
         )}
         </Loader>
-      </Grid>
+      </div>
     );
   }
 }

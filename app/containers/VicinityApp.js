@@ -37,18 +37,16 @@ export class UnconnectedApp extends Component {
             isLoggedIn={isLoggedIn}
             user={user}
           />
-          <div className="app-content">
-            <Grid>
+          <Grid className="app-content">
               <Notifications />
               {geolocationStatus == "requested" ? (
                 <p>Haetaan sijaintiasi...</p>
-              ) : (<p></p>
+              ) : (<span></span>
               )}
               <Loader loaded={geolocationStatus == "detected"}>
                 {children}
               </Loader>
-            </Grid>
-          </div>
+          </Grid>
           <Footer />
         </div>
       </DocumentTitle>
