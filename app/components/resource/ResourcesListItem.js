@@ -33,7 +33,6 @@ class ResourcesListItem extends Component {
 
   renderDistance(distance) {
     let bsStyle;
-    console.log(distance);
     if (distance < 500) {
       bsStyle = 'success';
     } else if (distance < 1000) {
