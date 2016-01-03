@@ -24,7 +24,7 @@ import {
 } from 'utils/DataUtils';
 import ImagePanel from 'components/common/ImagePanel';
 
-export class UnconnectedVinicityReservationPage extends Component {
+export class UnconnectedVicinityReservationPage extends Component {
 
   getChildContext() {
     return {red: this.props.red};
@@ -102,7 +102,7 @@ export class UnconnectedVinicityReservationPage extends Component {
   }
 }
 
-UnconnectedVinicityReservationPage.propTypes = {
+UnconnectedVicinityReservationPage.propTypes = {
   actions: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
@@ -114,11 +114,11 @@ UnconnectedVinicityReservationPage.propTypes = {
   unit: PropTypes.object.isRequired,
 };
 
-UnconnectedVinicityReservationPage.contextTypes = {
+UnconnectedVicinityReservationPage.contextTypes = {
   store: PropTypes.object
 };
 
-UnconnectedVinicityReservationPage.childContextTypes = {
+UnconnectedVicinityReservationPage.childContextTypes = {
   store: PropTypes.object,
   red: PropTypes.object
 };
@@ -134,7 +134,7 @@ function mapDispatchToProps(dispatch) {
 
 import { createSelector } from 'reselect';
 
-const vinicityReservationPageSelector = createSelector(
+const vicinityReservationPageSelector = createSelector(
   function passthrough(state, props) {
     /*
     Passing through state and props as is
@@ -153,4 +153,4 @@ const vinicityReservationPageSelector = createSelector(
   }
 );
 
-export default connect(vinicityReservationPageSelector, mapDispatchToProps)(UnconnectedVinicityReservationPage);
+export default connect(vicinityReservationPageSelector, mapDispatchToProps)(UnconnectedVicinityReservationPage);
