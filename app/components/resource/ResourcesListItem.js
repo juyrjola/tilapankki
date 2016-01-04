@@ -67,7 +67,7 @@ class ResourcesListItem extends Component {
     const distance = resource.distance;
     const inline = {
       display: 'inline',
-    }
+    };
 
     return (
       <LinkContainer to={link}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Leaflet from 'leaflet';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Marker, Popup, TileLayer, CircleMarker } from 'react-leaflet';
 
 import markerIconSrc from '../../../node_modules/leaflet/dist/images/marker-icon.png';
 import markerIconRetinaSrc from '../../../node_modules/leaflet/dist/images/marker-icon-2x.png';
@@ -89,7 +89,27 @@ export default class ReactLeafletMap extends Component {
 
     const position = [markers[1].coords.latitude, markers[1].coords.longitude];
 
-    console.log("pos?", position);
+    const marks = markers.map(
+      (marker, index) => {
+        const marker_position = [marker.coords.latitude, marker.coords.longitude];
+        switch (marker.type) {
+          case 'userpos':
+            return (
+              <CircleMarker center={marker_position}>
+                <Popup>
+                  <span>{marker.msg}</span>
+                </Popup>
+              </CircleMarker>);
+
+          case 'marker':
+            return (
+              <Marker key={index} position={marker_position}>
+                <Popup>
+                  <span>{marker.msg}</span>
+                </Popup>
+              </Marker>);
+        }
+    });
 
     return (
       <div id={MAP_CONTAINER_ID} style={style}>
@@ -98,11 +118,7 @@ export default class ReactLeafletMap extends Component {
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={position}>
-          <Popup>
-            <span>{markers[1].msg}</span>
-          </Popup>
-        </Marker>
+        {marks}
         </Map>
       </div>
     );
