@@ -19,7 +19,7 @@ const resourcesListSelector = createSelector(
     resources,
     units,
     time,
-    geolocation,
+    geolocation
   ) => {
     return {
       isFetchingResources,
