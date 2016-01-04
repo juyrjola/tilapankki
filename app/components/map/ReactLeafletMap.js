@@ -87,8 +87,6 @@ export default class ReactLeafletMap extends Component {
 
     const markers = this.props.markers;
 
-    const position = [markers[1].coords.latitude, markers[1].coords.longitude];
-
     const marks = markers.map(
       (marker, index) => {
         const marker_position = [marker.coords.latitude, marker.coords.longitude];
@@ -111,9 +109,11 @@ export default class ReactLeafletMap extends Component {
         }
     });
 
+    const bounds = markers.map(marker => [marker.coords.latitude, marker.coords.longitude]);
+
     return (
       <div id={MAP_CONTAINER_ID} style={style}>
-        <Map center={position} zoom={13}>
+        <Map bounds={bounds}>
         <TileLayer
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
