@@ -5,19 +5,49 @@ import React, { Component, PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import Loader from 'react-loader';
 import moment from 'moment';
+import { slotLength } from 'utils/TimeUtils';
 
 import TimeSlot from 'components/reservation/TimeSlot';
 
 function filterSlot(slot) {
   if (moment(slot.end) < moment()) return false;
   else if (slot.reserved) return false;
-  else return true;
+  return true;
 }
 
 class TimeSlots extends Component {
   constructor(props) {
     super(props);
     this.renderTimeSlot = this.renderTimeSlot.bind(this);
+  }
+
+  componentDidMount() {
+    const { slots: timeSlots, onClick: toggleTimeSlot } = this.props;
+    const length = slotLength(timeSlots[0]);
+    const slotsPerHour = 60 / length.minutes();
+    const filteredSlots = this.filteredSlots(timeSlots);
+    const consecutiveSlots = filteredSlots.reduce((consecutives, slot) => {
+      if (consecutives.length === slotsPerHour) {
+        return consecutives;
+      }
+      if (consecutives.length > 0) {
+        const last = consecutives[consecutives.length - 1];
+        if (last.end === slot.start) {
+          return consecutives.concat(slot);
+        }
+      }
+      return [slot];
+    }, []);
+    consecutiveSlots.forEach((slot) => {
+      toggleTimeSlot(slot.asISOString);
+    });
+  }
+
+  filteredSlots(slots) {
+    if (this.context.red) {
+      return filter(slots, filterSlot);
+    }
+    return slots;
   }
 
   renderTimeSlot(slot) {
@@ -34,7 +64,6 @@ class TimeSlots extends Component {
       time,
     } = this.props;
     const scrollTo = time && time === slot.start;
-
     return (
       <TimeSlot
         addNotification={addNotification}
@@ -60,12 +89,7 @@ class TimeSlots extends Component {
       slots,
     } = this.props;
 
-    let filtered_slots;
-    if (this.context.red) {
-      filtered_slots = filter(slots, filterSlot);
-    } else {
-      filtered_slots = slots;
-    }
+    const filteredSlots = this.filteredSlots(slots);
 
     const isAdmin = resource.userPermissions.isAdmin;
 
@@ -87,7 +111,7 @@ class TimeSlots extends Component {
               </tr>
             </thead>
             <tbody>
-              {map(filtered_slots, this.renderTimeSlot)}
+              {map(filteredSlots, this.renderTimeSlot)}
             </tbody>
           </Table>
         ) : (
@@ -100,7 +124,7 @@ class TimeSlots extends Component {
 
 TimeSlots.contextTypes = {
   store: PropTypes.object,
-  red: PropTypes.object
+  red: PropTypes.object,
 };
 
 TimeSlots.propTypes = {

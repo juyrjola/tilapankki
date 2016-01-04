@@ -11,6 +11,7 @@ export default {
   getDateString,
   formatDateString,
   getTimeSlots,
+  slotLength,
 };
 
 function addToDate(date, daysToIncrement) {
@@ -40,6 +41,11 @@ function getDateString(date) {
   }
 
   return date;
+}
+
+function slotLength(slot) {
+  const { start, end } = slot;
+  return moment(end).subtract(moment(start));
 }
 
 function getTimeSlots(start, end, period = '00:30:00', reservations = [], reservationsToEdit = []) {
