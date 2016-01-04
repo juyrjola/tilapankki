@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LeafletMap from 'components/map/LeafletMap';
-//import resourceMapPositionSelector from 'selectors/containers/oneShotMapSelector.js';
+import resourceListMapSelector from 'selectors/containers/multiShotMapSelector.js';
 
 class MultiShotMap extends Component {
   render() {
@@ -18,7 +18,14 @@ class MultiShotMap extends Component {
         coords: userPosition.position.coords,
         type: 'userpos',
         msg: 'You are here.'
-      }
+      },
+      ...resources.map(resource => {
+        return {
+          coords: resource.location,
+          type: 'marker',
+          msg: 'A resource'
+        }
+      })
     ];
 
     return (<LeafletMap markers={coords} />);
@@ -27,4 +34,4 @@ class MultiShotMap extends Component {
 
 MultiShotMap.propTypes = {};
 
-export default MultiShotMap;
+export default connect(resourceListMapSelector)(MultiShotMap);
