@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LeafletMap from 'components/map/LeafletMap';
 import resourceListMapSelector from 'selectors/containers/multiShotMapSelector.js';
+import {
+  getName
+} from 'utils/DataUtils';
 
 class MultiShotMap extends Component {
   render() {
@@ -23,7 +26,7 @@ class MultiShotMap extends Component {
         return {
           coords: resource.location,
           type: 'marker',
-          msg: 'A resource'
+          msg: getName(resource)
         }
       })
     ];
