@@ -95,7 +95,7 @@ export default class ReactLeafletMap extends Component {
         switch (marker.type) {
           case 'userpos':
             return (
-              <CircleMarker {...GEOLOCATION_PATH_OPTIONS} center={marker_position}>
+              <CircleMarker key={index} {...GEOLOCATION_PATH_OPTIONS} center={marker_position}>
                 <Popup>
                   <span>{marker.msg}</span>
                 </Popup>
