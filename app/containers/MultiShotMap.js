@@ -5,27 +5,30 @@ import resourceListMapSelector from 'selectors/containers/multiShotMapSelector.j
 import {
   getName
 } from 'utils/DataUtils';
+import pairs from 'lodash/object/pairs';
 
 class MultiShotMap extends Component {
   render() {
-    const { userPosition, resources, renders } = this.props;
+    const { userPosition, resources_combined, units } = this.props;
 
     if (userPosition.status !== 'detected') {
       return null;
     }
-
-    // ,  ...resources.map((resource) => resource)
     const coords = [
       {
         coords: userPosition.position.coords,
         type: 'userpos',
         msg: 'You are here.'
       },
-      ...resources.map((resource, index) => {
+      ...pairs(resources_combined).map((item) => {
+        const [unit_id, resources] = item;
+        const unit = units[unit_id];
+        const [longitude, latitude] = unit.location.coordinates;
+        const unitLocation = { longitude, latitude };
         return {
-          coords: resource.location,
+          coords: unitLocation,
           type: 'marker',
-          msg: renders[index]
+          msg: {unit, resources}
         }
       })
     ];

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Leaflet from 'leaflet';
 import { Map, Marker, Popup, TileLayer, CircleMarker } from 'react-leaflet';
+import ResourcesMapListItem from 'components/resource/ResourcesMapListItem';
 
 import markerIconSrc from '../../../node_modules/leaflet/dist/images/marker-icon.png';
 import markerIconRetinaSrc from '../../../node_modules/leaflet/dist/images/marker-icon-2x.png';
@@ -84,7 +85,6 @@ export default class ReactLeafletMap extends Component {
       height: '300px',
       margin: '20px 0',
     };
-
     const markers = this.props.markers;
 
     const marks = markers.map(
@@ -103,7 +103,9 @@ export default class ReactLeafletMap extends Component {
             return (
               <Marker key={index} position={marker_position}>
                 <Popup>
-                  <span>{marker.msg}</span>
+                  <span>
+                    <ResourcesMapListItem {...marker.msg} />
+                  </span>
                 </Popup>
               </Marker>);
         }

@@ -85,8 +85,7 @@ export class UnconnectedResourcesList extends Component {
               <ListGroup fill>
               {map(resources, this.renderResourcesListItem)}
               </ListGroup>
-              <MultiShotMap userPosition={geolocation} resources={resources} units={units}
-                            renders={map(resources, this.renderResourcesListItem)} />
+              <MultiShotMap userPosition={geolocation} resources={resources} units={units} />
             </div>
           ) : (
             <ListGroup fill>
