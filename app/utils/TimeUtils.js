@@ -9,6 +9,7 @@ export default {
   addToDate,
   getDateStartAndEndTimes,
   getDateString,
+  formatDateString,
   getTimeSlots,
 };
 
@@ -29,9 +30,13 @@ function getDateStartAndEndTimes(date) {
   return { start, end };
 }
 
+function formatDateString(date) {
+  return moment(date).format(DATE_FORMAT);
+}
+
 function getDateString(date) {
   if (!date) {
-    return moment().format(DATE_FORMAT);
+    return formatDateString(moment());
   }
 
   return date;

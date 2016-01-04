@@ -22,6 +22,7 @@ class ConfirmReservationModal extends Component {
   renderModalBody() {
     const {
       isEditing,
+      isLoggedIn,
       reservationsToEdit,
       resource,
       selectedReservations,
@@ -62,6 +63,11 @@ class ConfirmReservationModal extends Component {
       );
     }
 
+    let loginMsg = null;
+    if (!isLoggedIn) {
+      loginMsg = <p>Varauksen vahvistamiseksi sinut ohjataan kirjautumissivulle.</p>;
+    }
+
     return (
       <div>
         <p><strong>Oletko varma että haluat tehdä seuraavat varaukset?</strong></p>
@@ -69,6 +75,7 @@ class ConfirmReservationModal extends Component {
           {map(selectedReservations, this.renderReservation)}
         </ul>
         {isAdmin && commentInput}
+        {loginMsg}
       </div>
     );
   }
@@ -88,6 +95,15 @@ class ConfirmReservationModal extends Component {
       onClose,
       show,
     } = this.props;
+
+    let buttonLabel;
+    if (isMakingReservations) {
+      buttonLabel = 'Tallennetaan...';
+    } else if (isEditing) {
+      buttonLabel = 'Tallenna';
+    } else {
+      buttonLabel = 'Tee varaus';
+    }
 
     return (
       <Modal
@@ -117,7 +133,7 @@ class ConfirmReservationModal extends Component {
             disabled={isMakingReservations}
             onClick={this.onConfirm}
           >
-            {isMakingReservations ? 'Tallennetaan...' : 'Tallenna'}
+            {buttonLabel}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -31,9 +31,9 @@ export class UnconnectedVicinityReservationPage extends Component {
   }
 
   componentDidMount() {
-    const { actions, date, id } = this.props;
+    const { actions, date, time, id } = this.props;
     const fetchParams = getDateStartAndEndTimes(date);
-
+    fetchParams.start = time;
     actions.fetchResource(id, fetchParams);
   }
 
@@ -71,15 +71,6 @@ export class UnconnectedVicinityReservationPage extends Component {
               address={getAddressWithName(unit)}
               name={resourceName}
             />
-            <LinkContainer to={`/resources/${id}?date=${date.split('T')[0]}`}>
-              <Button
-                bsSize="large"
-                bsStyle="primary"
-                className="responsive-button"
-              >
-                Tilan tiedot
-              </Button>
-            </LinkContainer>
             <h2 id="reservation-header">{isLoggedIn ? 'Varaa tila' : 'Varaustilanne'}</h2>
             <ReservationForm
               location={location}

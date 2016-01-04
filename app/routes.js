@@ -29,7 +29,7 @@ export default (params) => {
       if (!auth.userId) {
         // To be able to login to a page without the react router "/#/" hash we need to use
         // the window.location.replace instead of the replaceState provided by react router.
-        window.location.replace(`${window.location.origin}/login`);
+        window.location.replace(`${window.location.origin}/login/helsinki/initiate/${nextState.location.pathname}`);
       }
       cb();
     }, 0);
@@ -42,6 +42,9 @@ export default (params) => {
 
   return (
     <Route component={VicinityApp}>
+      <Route onEnter={requireAuth}>
+        <Route component={UserReservationsPage} path="/my-reservations" />
+      </Route>
       <Route component={ResourcesList} onEnter={scrollTop} path="/" />
       <Route component={AboutPage} onEnter={scrollTop} path="/about" />
       <Route component={VicinityReservationPage} onEnter={scrollTop} path="/resources/:id" />

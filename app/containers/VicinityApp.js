@@ -1,3 +1,4 @@
+import forEach from 'lodash/collection/forEach';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { Grid } from 'react-bootstrap';
@@ -9,6 +10,7 @@ import { updatePath } from 'redux-simple-router';
 import { clearSearchResults } from 'actions/searchActions';
 import { fetchGeolocation } from 'actions/geolocationActions';
 import { updateTime } from 'actions/timeActions';
+import { postReservation } from 'actions/reservationActions';
 import Footer from 'components/layout/VicinityFooter';
 import Navbar from 'components/layout/VicinityNavBar';
 import Notifications from 'containers/Notifications';
@@ -16,8 +18,25 @@ import appSelector from 'selectors/containers/appSelector';
 
 export class UnconnectedApp extends Component {
   componentDidMount() {
+    const { actions, isLoggedIn } = this.props;
     this.props.actions.updateTime();
     this.props.actions.fetchGeolocation();
+    const pendingReservation = localStorage.getItem('pendingReservation');
+    if (!isLoggedIn ||
+        pendingReservation === undefined ||
+        pendingReservation === null ||
+        !JSON.parse(pendingReservation)) {
+      return;
+    }
+    localStorage.removeItem('pendingReservation');
+    const { selectedReservations, values } = JSON.parse(pendingReservation);
+    if (selectedReservations.length) {
+      selectedReservations.forEach((reservation) => {
+        actions.postReservation(
+          Object.assign({}, reservation, values)
+        );
+      });
+    }
   }
 
   render() {
@@ -68,6 +87,7 @@ function mapDispatchToProps(dispatch) {
     updateTime,
     fetchGeolocation,
     updatePath,
+    postReservation,
   };
 
   return { actions: bindActionCreators(actionCreators, dispatch) };

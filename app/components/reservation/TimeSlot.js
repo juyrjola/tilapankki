@@ -63,26 +63,11 @@ class TimeSlot extends Component {
 
   handleRowClick(disabled) {
     const {
-      addNotification,
-      isLoggedIn,
       onClick,
-      resource,
       slot,
     } = this.props;
 
-    if (disabled) {
-      const message = this.getReservationInfoMessage(isLoggedIn, resource, slot);
-      if (message) {
-        const notification = {
-          message: message,
-          type: 'info',
-          timeOut: 10000,
-        };
-        addNotification(notification);
-      }
-    } else {
-      onClick(slot.asISOString);
-    }
+    onClick(slot.asISOString);
   }
 
   renderUserInfo(user) {
@@ -98,14 +83,12 @@ class TimeSlot extends Component {
   render() {
     const {
       isEditing,
-      isLoggedIn,
       resource,
       selected,
       slot,
     } = this.props;
     const isPast = moment(slot.end) < moment();
     const disabled = (
-      !isLoggedIn ||
       !resource.userPermissions.canMakeReservations ||
       !slot.editing && (slot.reserved || isPast)
     );
@@ -177,7 +160,6 @@ class TimeSlot extends Component {
 TimeSlot.propTypes = {
   addNotification: PropTypes.func.isRequired,
   isEditing: PropTypes.bool.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   openReservationDeleteModal: PropTypes.func.isRequired,
   updatePath: PropTypes.func.isRequired,

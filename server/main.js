@@ -67,16 +67,29 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/login', passport.authenticate('helsinki'));
+function getRedirectUrl(url) {
+  const pathSegments = url.split('/');
+  const redirectUrl = pathSegments.splice(4);
+  return redirectUrl.join('/');
+}
+
+app.get('/login/helsinki/initiate/*',
+        (req, res, next) => {
+          req.session.redirect_after_login = getRedirectUrl(req.originalUrl);
+          next();
+        },
+        passport.authenticate('helsinki'));
 
 app.get(
   '/login/helsinki/return',
   passport.authenticate('helsinki', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect('/');
-  });
+    res.redirect('http://localhost:3000/' + req.session.redirect_after_login);
+  }
+);
 
-app.get('/logout', function(req, res) {
+
+app.get('/logout', function (req, res) {
   req.logOut();
   const redirectUrl = req.query.next || 'https://varaamo.hel.fi';
   res.redirect(`https://api.hel.fi/sso/logout/?next=${redirectUrl}`);

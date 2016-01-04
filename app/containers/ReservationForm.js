@@ -89,13 +89,22 @@ export class UnconnectedReservationForm extends Component {
   }
 
   handleReservation(values = {}) {
-    const { actions, selectedReservations } = this.props;
+    const { actions, selectedReservations, isLoggedIn } = this.props;
 
-    selectedReservations.forEach(reservation => {
-      actions.postReservation(
-        Object.assign({}, reservation, values)
-      );
-    });
+    if (isLoggedIn) {
+      selectedReservations.forEach(reservation => {
+        actions.postReservation(
+          Object.assign({}, reservation, values)
+        );
+      });
+    } else {
+      const pendingReservation = {
+        selectedReservations,
+        values,
+      };
+      localStorage.setItem('pendingReservation', JSON.stringify(pendingReservation));
+      window.location.replace(`${window.location.origin}/login/helsinki/initiate/my-reservations`);
+    }
   }
 
   render() {
@@ -116,8 +125,21 @@ export class UnconnectedReservationForm extends Component {
     } = this.props;
     const isEditing = Boolean(reservationsToEdit.length);
 
+    const controls = (
+      <ReservationFormControls
+        addNotification={actions.addNotification}
+        disabled={!resource.userPermissions.canMakeReservations || !selected.length || isMakingReservations}
+        isEditing={isEditing}
+        isLoggedIn={isLoggedIn}
+        isMakingReservations={isMakingReservations}
+        onCancel={this.handleEditCancel}
+        onClick={actions.openConfirmReservationModal}
+        resource={resource}
+      />);
+
     return (
       <div>
+        {controls}
         <TimeSlots
           addNotification={actions.addNotification}
           isEditing={isEditing}
@@ -133,19 +155,11 @@ export class UnconnectedReservationForm extends Component {
           slots={timeSlots}
           time={time}
         />
-        <ReservationFormControls
-          addNotification={actions.addNotification}
-          disabled={!resource.userPermissions.canMakeReservations || !selected.length || isMakingReservations}
-          isEditing={isEditing}
-          isLoggedIn={isLoggedIn}
-          isMakingReservations={isMakingReservations}
-          onCancel={this.handleEditCancel}
-          onClick={actions.openConfirmReservationModal}
-          resource={resource}
-        />
+        {controls}
         <ConfirmReservationModal
           isEditing={isEditing}
           isMakingReservations={isMakingReservations}
+          isLoggedIn={isLoggedIn}
           onClose={actions.closeConfirmReservationModal}
           onConfirm={isEditing ? this.handleEdit : this.handleReservation}
           reservationsToEdit={reservationsToEdit}
