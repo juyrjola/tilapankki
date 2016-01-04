@@ -87,7 +87,7 @@ export default class ReactLeafletMap extends Component {
 
     const markers = this.props.markers;
 
-    const position = [markers[0].coords.latitude, markers[0].coords.longitude];
+    const position = [markers[1].coords.latitude, markers[1].coords.longitude];
 
     console.log("pos?", position);
 
@@ -100,7 +100,7 @@ export default class ReactLeafletMap extends Component {
         />
         <Marker position={position}>
           <Popup>
-            <span>This is my msg!</span>
+            <span>{markers[1].msg}</span>
           </Popup>
         </Marker>
         </Map>

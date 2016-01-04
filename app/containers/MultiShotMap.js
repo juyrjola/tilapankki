@@ -8,7 +8,7 @@ import {
 
 class MultiShotMap extends Component {
   render() {
-    const { userPosition, resources } = this.props;
+    const { userPosition, resources, renders } = this.props;
 
     if (userPosition.status !== 'detected') {
       return null;
@@ -21,11 +21,11 @@ class MultiShotMap extends Component {
         type: 'userpos',
         msg: 'You are here.'
       },
-      ...resources.map(resource => {
+      ...resources.map((resource, index) => {
         return {
           coords: resource.location,
           type: 'marker',
-          msg: getName(resource)
+          msg: renders[index]
         }
       })
     ];
