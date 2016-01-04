@@ -30,7 +30,6 @@ function getUnitCoords(resource, units) {
 }
 
 const resourceListMapSelector = (state, props) => {
-  console.log("stops", state, props);
   const { userPosition, resources, units } = props;
 
   const res = Object.values(resources).map(resource => {

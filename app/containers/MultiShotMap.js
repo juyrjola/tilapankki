@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import LeafletMap from 'components/map/LeafletMap';
+import ReactLeafletMap from 'components/map/ReactLeafletMap';
 import resourceListMapSelector from 'selectors/containers/multiShotMapSelector.js';
 import {
   getName
@@ -8,13 +8,12 @@ import {
 
 class MultiShotMap extends Component {
   render() {
-    const { userPosition, resources, units } = this.props;
+    const { userPosition, resources } = this.props;
 
     if (userPosition.status !== 'detected') {
       return null;
     }
 
-    console.log("res", resources, units);
     // ,  ...resources.map((resource) => resource)
     const coords = [
       {
@@ -31,7 +30,7 @@ class MultiShotMap extends Component {
       })
     ];
 
-    return (<LeafletMap markers={coords} />);
+    return (<ReactLeafletMap markers={coords} />);
   }
 }
 
