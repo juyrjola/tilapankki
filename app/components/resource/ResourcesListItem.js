@@ -63,7 +63,7 @@ class ResourcesListItem extends Component {
 
     const nameSeparator = isEmpty(resource) || isEmpty(unit) ? '' : ',';
     const availableTime = getAvailableTime(getOpeningHours(resource), resource.reservations);
-    const link = `/resources/${resource.id}`
+    const link = `/resources/${resource.id}`;
     const distance = resource.distance;
     const inline = {
       display: 'inline',
