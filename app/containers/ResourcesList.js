@@ -9,6 +9,7 @@ import { updatePath } from 'redux-simple-router';
 import { fetchResources } from 'actions/resourceActions';
 import { fetchUnits } from 'actions/unitActions';
 import ResourcesListItem from 'components/resource/ResourcesListItem';
+import MultiShotMap from './MultiShotMap';
 import resourcesListSelector from 'selectors/containers/resourcesListSelector';
 import moment from 'moment';
 
@@ -69,6 +70,7 @@ export class UnconnectedResourcesList extends Component {
       isFetchingResources,
       resources,
       geolocation,
+      units
     } = this.props;
 
     return (
@@ -79,9 +81,12 @@ export class UnconnectedResourcesList extends Component {
         )}
         <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
-            <ListGroup fill>
+            <div>
+              <ListGroup fill>
               {map(resources, this.renderResourcesListItem)}
-            </ListGroup>
+              </ListGroup>
+              <MultiShotMap userPosition={geolocation} resources={resources} units={units} />
+            </div>
           ) : (
             <ListGroup fill>
               <ListGroupItem>Vapaita tiloja ei valitettavasti löytynyt.</ListGroupItem>
