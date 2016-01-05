@@ -32,6 +32,9 @@ class ResourcesMapListItem extends Component {
 
   renderDistance(distance) {
     let bsStyle;
+    if (distance === undefined) {
+      return null;
+    }
     if (distance < 500) {
       bsStyle = 'success';
     } else if (distance < 1000) {

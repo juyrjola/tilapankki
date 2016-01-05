@@ -142,8 +142,8 @@ function getTranslatedProperty(item, property, language = 'fi') {
 }
 
 function humanDistance(meters) {
-  if (meters === Number.MAX_VALUE || Number.isNaN(meters)) {
-    return '?';
+  if (meters === Number.MAX_VALUE || Number.isNaN(meters) || meters === undefined) {
+    return null;
   } else if (meters < 1000) {
     return '' + (Math.ceil(meters)) + 'm';
   }
