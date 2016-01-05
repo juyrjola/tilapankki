@@ -73,6 +73,8 @@ export class UnconnectedResourcesList extends Component {
       units
     } = this.props;
 
+    console.log("graah", this);
+
     return (
       <div>
         {isFetchingResources ? (
@@ -85,7 +87,7 @@ export class UnconnectedResourcesList extends Component {
               <ListGroup fill>
               {map(resources, this.renderResourcesListItem)}
               </ListGroup>
-              <MultiShotMap userPosition={geolocation} resources={resources} units={units} />
+              <MultiShotMap userPosition={geolocation} resources={resources} units={units} history={this.props.history} />
             </div>
           ) : (
             <ListGroup fill>

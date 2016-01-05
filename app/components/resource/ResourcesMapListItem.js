@@ -1,7 +1,6 @@
 import isEmpty from 'lodash/lang/isEmpty';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 import { Label, ListGroupItem, Grid, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { humanDistance } from 'utils/DataUtils';
@@ -54,14 +53,16 @@ class ResourcesMapListItem extends Component {
   }
 
   renderResource(resource, index) {
-    const link = `/resources/${resource.id}`;
+    const move = () => {
+      this.props.history.pushState({}, `/resources/${resource.id}`);
+      return false;
+    };
+
     return (
       <li key={index}>
-        <LinkContainer to={link}>
-          <div>
-            <h5><span>{this.renderImage(getMainImage(resource.images))}</span> {getName(resource)}</h5>
-          </div>
-        </LinkContainer>
+        <div>
+          <a href="#" onClick={move}><h5><span>{this.renderImage(getMainImage(resource.images))}</span> {getName(resource)}</h5></a>
+        </div>
       </li>);
   }
 
@@ -92,9 +93,13 @@ class ResourcesMapListItem extends Component {
   }
 }
 
-ResourcesMapListItem.propTypes = {
-  resources: PropTypes.array.isRequired,
-  unit: PropTypes.object.isRequired,
+//ResourcesMapListItem.propTypes = {
+//  resources: PropTypes.array.isRequired,
+//  unit: PropTypes.object.isRequired,
+//};
+
+ResourcesMapListItem.contextTypes = {
+  router: React.PropTypes.func
 };
 
 export default ResourcesMapListItem;

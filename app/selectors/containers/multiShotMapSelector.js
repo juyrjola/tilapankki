@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 const resourceListMapSelector = (state, props) => {
-  const { userPosition, resources, units } = props;
+  const { userPosition, resources, units, history } = props;
 
   const resources_combined = {};
 
@@ -18,7 +18,8 @@ const resourceListMapSelector = (state, props) => {
   return {
     userPosition,
     resources_combined,
-    units
+    units,
+    history
   };
 };
 
