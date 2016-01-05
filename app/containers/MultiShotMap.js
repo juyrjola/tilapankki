@@ -9,7 +9,7 @@ import pairs from 'lodash/object/pairs';
 
 class MultiShotMap extends Component {
   render() {
-    const { userPosition, resources_combined, units } = this.props;
+    const { userPosition, resources_combined, units, history } = this.props;
 
     if (userPosition.status !== 'detected') {
       return null;
@@ -33,7 +33,7 @@ class MultiShotMap extends Component {
       })
     ];
 
-    return (<ReactLeafletMap markers={coords} />);
+    return (<ReactLeafletMap markers={coords} history={history} />);
   }
 }
 

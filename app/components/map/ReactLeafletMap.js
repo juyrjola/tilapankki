@@ -104,7 +104,7 @@ export default class ReactLeafletMap extends Component {
               <Marker key={index} position={marker_position}>
                 <Popup>
                   <span>
-                    <ResourcesMapListItem {...marker.msg} />
+                    <ResourcesMapListItem {...marker.msg} history={this.props.history} />
                   </span>
                 </Popup>
               </Marker>);
