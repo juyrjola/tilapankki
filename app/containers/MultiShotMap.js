@@ -15,11 +15,6 @@ class MultiShotMap extends Component {
       return null;
     }
     const coords = [
-      {
-        coords: userPosition.position.coords,
-        type: 'userpos',
-        msg: 'You are here.'
-      },
       ...pairs(resources_combined).map((item) => {
         const [unit_id, resources] = item;
         const unit = units[unit_id];
@@ -30,7 +25,12 @@ class MultiShotMap extends Component {
           type: 'marker',
           msg: {unit, resources}
         }
-      })
+      }),
+      {
+        coords: userPosition.position.coords,
+        type: 'userpos',
+        msg: 'You are here.'
+      },
     ];
 
     return (<ReactLeafletMap markers={coords} history={history} />);

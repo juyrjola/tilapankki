@@ -13,14 +13,14 @@ class OneShotMap extends Component {
 
     const coords = [
       {
-        coords: userPosition.position.coords,
-        type: 'userpos',
-        msg: 'You are here.'
-      },
-      {
         coords: unitLocation,
         type: 'marker',
         msg: 'I should be a link to the Service Map.'
+      },
+      {
+        coords: userPosition.position.coords,
+        type: 'userpos',
+        msg: 'You are here.'
       }
     ];
 
