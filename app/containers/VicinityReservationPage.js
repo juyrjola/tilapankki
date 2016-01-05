@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/lang/isEmpty';
+import map from 'lodash/collection/map';
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import DocumentTitle from 'react-document-title';
@@ -6,6 +7,7 @@ import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { bindActionCreators } from 'redux';
+import { updatePath } from 'redux-simple-router';
 
 import { fetchResource } from 'actions/resourceActions';
 import ResourceHeader from 'components/resource/ResourceHeader';
@@ -16,6 +18,13 @@ import ReservationForm from 'containers/ReservationForm';
 import reservationPageSelector from 'selectors/containers/reservationPageSelector';
 import { getDateStartAndEndTimes } from 'utils/TimeUtils';
 import ResourceDetails from 'components/resource/ResourceDetails';
+import ReservationsListItem from 'components/reservation/ReservationsListItem';
+import {
+  openReservationDeleteModal,
+  selectReservationToDelete,
+  selectReservationToEdit,
+} from 'actions/uiActions';
+import ReservationDeleteModal from 'containers/ReservationDeleteModal';
 import {
   getAddressWithName,
   getDescription,
@@ -25,6 +34,10 @@ import {
 import ImagePanel from 'components/common/ImagePanel';
 
 export class UnconnectedVicinityReservationPage extends Component {
+  constructor(props) {
+    super(props);
+    this.renderReservationsListItem = this.renderReservationsListItem.bind(this);
+  }
 
   getChildContext() {
     return {red: this.props.red};
@@ -46,6 +59,27 @@ export class UnconnectedVicinityReservationPage extends Component {
     }
   }
 
+  renderReservationsListItem(reservation) {
+    const {
+      actions,
+      resource,
+      unit,
+    } = this.props;
+
+    return (
+      <ReservationsListItem
+        key={reservation.url}
+        reservation={reservation}
+        resource={resource}
+        openReservationDeleteModal={actions.openReservationDeleteModal}
+        updatePath={actions.updatePath}
+        selectReservationToDelete={actions.selectReservationToDelete}
+        selectReservationToEdit={actions.selectReservationToEdit}
+        unit={unit}
+      />
+    );
+  }
+
   render() {
     const {
       date,
@@ -63,21 +97,41 @@ export class UnconnectedVicinityReservationPage extends Component {
       return <NotFoundPage />;
     }
 
+    const ownReservations = (!isEmpty(resource.reservations) ?
+      resource.reservations.filter(reservation => reservation.isOwn) :
+      []);
+
     return (
       <DocumentTitle title={`${resourceName} varaaminen - Varaamo`}>
         <Loader loaded={!isEmpty(resource)}>
-          <div className="reservation-page"v>
+          <div className="reservation-page">
             <ResourceHeader
               address={getAddressWithName(unit)}
               name={resourceName}
             />
-            <h2 id="reservation-header">{isLoggedIn ? 'Varaa tila' : 'Varaustilanne'}</h2>
-            <ReservationForm
-              location={location}
-              params={params}
-            />
+            {!isEmpty(ownReservations) ?
+              (<div>
+                <h2>Oma varauksesi</h2>
+                  <ul className="reservations-list">
+                    {map(ownReservations, this.renderReservationsListItem)}
+                  </ul>
+                  <ReservationDeleteModal />
+                  <OneShotMap params={params} />
+                <h2 id="reservation-header">{isLoggedIn ? 'Varaa tila' : 'Varaustilanne'}</h2>
+                  <ReservationForm
+                    location={location}
+                    params={params}
+                  />
+              </div>) :
+              (<div>
+                <h2 id="reservation-header">{isLoggedIn ? 'Varaa tila' : 'Varaustilanne'}</h2>
+                  <ReservationForm
+                    location={location}
+                    params={params}
+                  />
+                  <OneShotMap params={params} />
+              </div>)}
           </div>
-          <OneShotMap params={params} />
           <ImagePanel
             altText={`Kuva ${resourceName} tilasta`}
             images={resource.images || []}
@@ -118,6 +172,10 @@ UnconnectedVicinityReservationPage.childContextTypes = {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResource,
+    openReservationDeleteModal,
+    updatePath,
+    selectReservationToDelete,
+    selectReservationToEdit,
   };
 
   return { actions: bindActionCreators(actionCreators, dispatch) };

@@ -16,13 +16,13 @@ class ReservationControls extends Component {
 
     return (
       <div className="buttons">
-        <Button
+      {/* <Button
           bsSize="xsmall"
           bsStyle="primary"
           onClick={onEditClick}
         >
           Muokkaa
-        </Button>
+        </Button> */}
         <Button
           bsSize="xsmall"
           bsStyle="danger"

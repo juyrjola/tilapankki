@@ -74,7 +74,7 @@ class ReservationsListItem extends Component {
         </div>
         <div className="time">
           <Link
-            to={`/resources/${resource.id}/reservation`}
+            to={`/resources/${resource.id}/`}
             query={{
               date: reservation.begin.split('T')[0],
               time: reservation.begin,
