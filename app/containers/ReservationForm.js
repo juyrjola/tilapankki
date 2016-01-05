@@ -89,7 +89,7 @@ export class UnconnectedReservationForm extends Component {
   }
 
   handleReservation(values = {}) {
-    const { actions, selectedReservations, isLoggedIn } = this.props;
+    const { actions, selectedReservations, isLoggedIn, id } = this.props;
 
     if (isLoggedIn) {
       selectedReservations.forEach(reservation => {
@@ -103,7 +103,7 @@ export class UnconnectedReservationForm extends Component {
         values,
       };
       localStorage.setItem('pendingReservation', JSON.stringify(pendingReservation));
-      window.location.replace(`${window.location.origin}/login/helsinki/initiate/my-reservations`);
+      window.location.replace(`${window.location.origin}/login/helsinki/initiate/resources/${id}`);
     }
   }
 
