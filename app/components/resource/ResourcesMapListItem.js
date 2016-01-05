@@ -59,8 +59,7 @@ class ResourcesMapListItem extends Component {
       <li key={index}>
         <LinkContainer to={link}>
           <div>
-            <h4>{getName(resource)}</h4>
-            <span>{this.renderImage(getMainImage(resource.images))}</span>
+            <h5><span>{this.renderImage(getMainImage(resource.images))}</span> {getName(resource)}</h5>
           </div>
         </LinkContainer>
       </li>);
@@ -85,7 +84,7 @@ class ResourcesMapListItem extends Component {
         <div>
           <span>{this.renderDistance(distance)} {this.renderAvailableTime(availableTime)}</span>
         </div>
-        <ul>
+        <ul style={{listStyleType: "none", padding: 0, margin: 0}}>
           {resources.map((resource, index) => this.renderResource(resource, index))}
         </ul>
       </div>
