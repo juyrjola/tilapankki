@@ -73,8 +73,6 @@ export class UnconnectedResourcesList extends Component {
       units
     } = this.props;
 
-    console.log("graah", this);
-
     return (
       <div>
         {isFetchingResources ? (
