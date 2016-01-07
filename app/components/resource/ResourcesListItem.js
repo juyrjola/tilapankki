@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Label, ListGroupItem, Grid, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { humanDistance } from 'utils/DataUtils';
+import moment from 'moment';
 
 import TimeRange from 'components/common/TimeRange';
 import {
@@ -21,13 +22,39 @@ class ResourcesListItem extends Component {
     super(props);
   }
 
-  renderAvailableTime(availableTime) {
+  renderAvailableHours(availableHours) {
     let bsStyle = 'success';
-    if (availableTime === '0 tuntia') {
-      bsStyle = 'danger';
+    let now = moment();
+    let start = moment(availableHours.starts);
+    let end = moment(availableHours.ends);
+    let when, duration;
+    if (end.diff(start, 'hours') < 1) {
+      bsStyle = 'warning';
+      duration = "Puoli tuntia";
+    }
+    else if (end.diff(start, 'hours') < 2) {
+      bsStyle = 'info';
+      duration = "Tunti";
+    }
+    else {
+      duration = end.diff(start, 'hours') + " tuntia";
+    }
+    if (start < now) {
+      when = "heti";
+    }
+    else if (start.diff(now, 'minutes') < 30) {
+      when = "kohta";
+    }
+    else if (start.diff(now, 'hours') < 1) {
+      bsStyle = 'info';
+      when = " klo " + start.format('HH:mm');
+    }
+    else {
+      bsStyle = 'warning';
+      when = " klo " + start.format('HH:mm');
     }
     return (
-      <Label bsStyle={bsStyle}>{availableTime}</Label>
+      <Label bsStyle={bsStyle}>{duration} {when}</Label>
     );
   }
 
@@ -62,7 +89,6 @@ class ResourcesListItem extends Component {
     } = this.props;
 
     const nameSeparator = isEmpty(resource) || isEmpty(unit) ? '' : ',';
-    const availableTime = getAvailableTime(getOpeningHours(resource), resource.reservations);
     const link = `/resources/${resource.id}`;
     const distance = resource.distance;
     const inline = {
@@ -77,7 +103,7 @@ class ResourcesListItem extends Component {
             <Row>
               <Col xs={9}>
                 <Row>{getName(unit)}</Row>
-                <Row>{this.renderDistance(distance)} {this.renderAvailableTime(availableTime)}</Row>
+                <Row>{this.renderDistance(distance)} {this.renderAvailableHours(resource.availableHours[0])}</Row>
               </Col>
               <Col xs={3}>
                 {this.renderImage(getMainImage(resource.images))}

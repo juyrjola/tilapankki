@@ -37,7 +37,7 @@ export class UnconnectedResourcesList extends Component {
     this.props.actions.fetchUnits();
     const params = {
       start: time,
-      end: moment(time).add(3, 'hours').toISOString(),
+      end: moment(time).add(8, 'hours').toISOString(),
       duration: 30,
       purpose: 'meetings-and-working',
       lat: geolocation.position.coords.latitude,
