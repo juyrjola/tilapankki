@@ -23,6 +23,7 @@ const app = express();
 const compiler = webpack(webpackConfig);
 const passport = configurePassport();
 const port = serverConfig.port;
+const ip = serverConfig.ip;
 
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
@@ -74,17 +75,19 @@ function getRedirectUrl(url) {
   return redirectUrl.join('/');
 }
 
-app.get('/login/helsinki/initiate/*',
-        (req, res, next) => {
-          req.session.redirect_after_login = getRedirectUrl(req.originalUrl);
-          next();
-        },
-        passport.authenticate('helsinki'));
+app.get(
+  '/login/helsinki/',
+  passport.authenticate('helsinki'));
 
 app.get('/login/helsinki/return',
   passport.authenticate('helsinki', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect('http://localhost:3000/' + req.session.redirect_after_login);
+    const html = (
+      '<!DOCTYPE html><html><body>' +
+      '<script type="text/javascript">window.opener.loginSuccessful(); window.close();</script>' +
+      '<p>Sisäänkirjautuminen onnistui.</p></body></html>'
+    );
+    res.send(html);
   }
 );
 
@@ -100,14 +103,14 @@ app.get('/auth', function (req, res) {
 
 app.get('*', render);
 
-app.listen(port, (error) => {
+app.listen(port, ip, (error) => {
   if (error) {
     console.error(error);
   } else {
     if (serverConfig.isProduction) {
       console.log('Production server running on port ' + port);
     } else {
-      console.log(`Listening at http://localhost:${port}`);
+      console.log(`Listening at http://${ip}:${port}`);
     }
   }
 });

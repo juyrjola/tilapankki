@@ -10,6 +10,11 @@ const initialState = Immutable({
 function authReducer(state = initialState, action) {
   switch (action.type) {
 
+    case types.SESSION.SUCCESS:
+      if (action.payload.auth !== undefined) {
+        return action.payload.auth;
+      }
+      return state;
   case types.API.RESERVATION_DELETE_ERROR:
   case types.API.RESERVATION_PUT_ERROR:
   case types.API.RESERVATION_POST_ERROR:

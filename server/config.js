@@ -23,6 +23,7 @@ const config = {
   },
   isProduction: isProduction,
   port: isProduction ? 8080 : 3000,
+  ip: 'localhost',
   webpackStylesExtensions: ['css', 'less'],
 };
 

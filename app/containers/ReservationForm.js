@@ -9,7 +9,7 @@ import { updatePath } from 'redux-simple-router';
 import { addNotification } from 'actions/notificationsActions';
 import {
   deleteReservation,
-  postReservation,
+  postPendingReservation,
   putReservation,
 } from 'actions/reservationActions';
 import {
@@ -28,6 +28,8 @@ import ReservationFormControls from 'components/reservation/ReservationFormContr
 import TimeSlots from 'components/reservation/TimeSlots';
 import ReservationDeleteModal from 'containers/ReservationDeleteModal';
 import reservationFormSelector from 'selectors/containers/reservationFormSelector';
+
+import loginWithCallback from 'utils/LoginUtils';
 
 export class UnconnectedReservationForm extends Component {
   constructor(props) {
@@ -89,21 +91,20 @@ export class UnconnectedReservationForm extends Component {
   }
 
   handleReservation(values = {}) {
-    const { actions, selectedReservations, isLoggedIn, id } = this.props;
+    const { actions, selectedReservations, id, isLoggedIn } = this.props;
 
-    if (isLoggedIn) {
-      selectedReservations.forEach(reservation => {
-        actions.postReservation(
-          Object.assign({}, reservation, values)
-        );
+    if (!isLoggedIn) {
+      loginWithCallback(() => {
+        if (selectedReservations && selectedReservations.length) {
+          selectedReservations.forEach((reservation) => {
+            actions.postPendingReservation(reservation);
+          });
+        }
       });
     } else {
-      const pendingReservation = {
-        selectedReservations,
-        values,
-      };
-      localStorage.setItem('pendingReservation', JSON.stringify(pendingReservation));
-      window.location.replace(`${window.location.origin}/login/helsinki/initiate/resources/${id}`);
+      selectedReservations.forEach(reservation => {
+        actions.postPendingReservation(Object.assign({}, reservation, values));
+      });
     }
   }
 
@@ -199,7 +200,7 @@ function mapDispatchToProps(dispatch) {
     deleteReservation,
     openConfirmReservationModal,
     openReservationDeleteModal,
-    postReservation,
+    postPendingReservation,
     updatePath,
     putReservation,
     selectReservationToDelete,

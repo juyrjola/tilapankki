@@ -2,6 +2,7 @@ import { CALL_API } from 'redux-api-middleware';
 
 import types from 'constants/ActionTypes';
 import { paginatedReservationsSchema } from 'middleware/Schemas';
+import fetchUserFromSession from 'actions/sessionActions';
 import {
   buildAPIUrl,
   getErrorTypeDescriptor,
@@ -14,6 +15,7 @@ export default {
   deleteReservation,
   fetchReservations,
   postReservation,
+  postPendingReservation,
   putReservation,
 };
 
@@ -113,5 +115,18 @@ function putReservation(reservation) {
       headers: getHeadersCreator(),
       body: JSON.stringify(reservation),
     },
+  };
+}
+
+function postPendingReservation(reservation) {
+  return (dispatch, getState) => {
+    const { auth } = getState();
+    const isLoggedIn = Boolean(auth.userId && auth.token);
+    if (!isLoggedIn) {
+      return dispatch(fetchUserFromSession()).then(() => {
+        dispatch(postReservation(reservation));
+      });
+    }
+    return dispatch(postReservation(reservation));
   };
 }
