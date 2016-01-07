@@ -9,7 +9,7 @@ import { updatePath } from 'redux-simple-router';
 import { addNotification } from 'actions/notificationsActions';
 import {
   deleteReservation,
-  postReservation,
+  postPendingReservation,
   putReservation,
 } from 'actions/reservationActions';
 import {
@@ -89,21 +89,24 @@ export class UnconnectedReservationForm extends Component {
   }
 
   handleReservation(values = {}) {
-    const { actions, selectedReservations, isLoggedIn, id } = this.props;
+    const { actions, selectedReservations, id, isLoggedIn } = this.props;
 
-    if (isLoggedIn) {
-      selectedReservations.forEach(reservation => {
-        actions.postReservation(
-          Object.assign({}, reservation, values)
-        );
-      });
-    } else {
-      const pendingReservation = {
-        selectedReservations,
-        values,
+    if (!isLoggedIn) {
+      window.loginSuccessful = () => {
+        if (selectedReservations && selectedReservations.length) {
+          selectedReservations.forEach((reservation) => {
+            actions.postPendingReservation(reservation);
+          });
+        }
       };
-      localStorage.setItem('pendingReservation', JSON.stringify(pendingReservation));
-      window.location.replace(`${window.location.origin}/login/helsinki/initiate/resources/${id}`);
+      window.open(
+        `${window.location.origin}/login/helsinki`,
+        'tpLoginWindow',
+        'location,scrollbars=on,width=720,height=600');
+    } else {
+      selectedReservations.forEach(reservation => {
+        actions.postPendingReservation(Object.assign({}, reservation, values));
+      });
     }
   }
 
@@ -199,7 +202,7 @@ function mapDispatchToProps(dispatch) {
     deleteReservation,
     openConfirmReservationModal,
     openReservationDeleteModal,
-    postReservation,
+    postPendingReservation,
     updatePath,
     putReservation,
     selectReservationToDelete,

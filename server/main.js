@@ -74,17 +74,19 @@ function getRedirectUrl(url) {
   return redirectUrl.join('/');
 }
 
-app.get('/login/helsinki/initiate/*',
-        (req, res, next) => {
-          req.session.redirect_after_login = getRedirectUrl(req.originalUrl);
-          next();
-        },
-        passport.authenticate('helsinki'));
+app.get(
+  '/login/helsinki/',
+  passport.authenticate('helsinki'));
 
 app.get('/login/helsinki/return',
   passport.authenticate('helsinki', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect('http://localhost:3000/' + req.session.redirect_after_login);
+    const html = (
+      '<!DOCTYPE html><html><body>' +
+      '<script type="text/javascript">window.opener.loginSuccessful(); window.close();</script>' +
+      '<p>Sisäänkirjautuminen onnistui.</p></body></html>'
+    );
+    res.send(html);
   }
 );
 
