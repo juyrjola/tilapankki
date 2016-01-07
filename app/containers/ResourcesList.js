@@ -1,7 +1,7 @@
 import map from 'lodash/collection/map';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
-import { Grid, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Grid, ListGroup, ListGroupItem, Tabs, Tab } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
@@ -81,12 +81,16 @@ export class UnconnectedResourcesList extends Component {
         )}
         <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
-            <div>
-              <ListGroup fill>
-              {map(resources, this.renderResourcesListItem)}
-              </ListGroup>
-              <MultiShotMap userPosition={geolocation} resources={resources} units={units} history={this.props.history} />
-            </div>
+            <Tabs defaultActiveKey={2}>
+              <Tab eventKey={1} title="Lista">
+                <ListGroup fill>
+                  {map(resources, this.renderResourcesListItem)}
+                </ListGroup>
+              </Tab>
+              <Tab eventKey={2} title="Kartta">
+                <MultiShotMap userPosition={geolocation} resources={resources} units={units} history={this.props.history} />
+              </Tab>
+            </Tabs>
           ) : (
             <ListGroup fill>
               <ListGroupItem>Vapaita tiloja ei valitettavasti löytynyt.</ListGroupItem>
