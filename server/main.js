@@ -17,6 +17,7 @@ import serverConfig from './config';
 import configurePassport from './configurePassport';
 import render from './render';
 import webpackConfig from '../config/webpack.development';
+import getAuthState from './authentication';
 
 const app = express();
 const compiler = webpack(webpackConfig);
@@ -80,19 +81,21 @@ app.get('/login/helsinki/initiate/*',
         },
         passport.authenticate('helsinki'));
 
-app.get(
-  '/login/helsinki/return',
+app.get('/login/helsinki/return',
   passport.authenticate('helsinki', { failureRedirect: '/login' }),
   (req, res) => {
     res.redirect('http://localhost:3000/' + req.session.redirect_after_login);
   }
 );
 
-
 app.get('/logout', function (req, res) {
   req.logOut();
   const redirectUrl = req.query.next || 'https://varaamo.hel.fi';
   res.redirect(`https://api.hel.fi/sso/logout/?next=${redirectUrl}`);
+});
+
+app.get('/auth', function (req, res) {
+  res.json(getAuthState(req));
 });
 
 app.get('*', render);
