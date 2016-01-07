@@ -31,53 +31,6 @@ const GEOLOCATION_PATH_OPTIONS = {
 const DEFAULT_ICON = Leaflet.icon(ICON_OPTIONS);
 
 export default class ReactLeafletMap extends Component {
-  no_componentDidMount() {
-    this.map = Leaflet.map(MAP_CONTAINER_ID);
-
-    Leaflet.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.map);
-
-    const markers = this.props.markers;
-    this.group = Leaflet.layerGroup();
-    this.drawMapContents(markers);
-  }
-
-  no_componentDidUpdate(props) {
-    const markers = this.props.markers;
-    this.drawMapContents(markers);
-  }
-
-  drawMapContents(marks) {
-    this.group.clearLayers();
-
-    const markers = marks.map((mark) => {
-      let marker;
-      switch (mark.type) {
-
-        case 'userpos':
-          marker = Leaflet.circleMarker([mark.coords.latitude, mark.coords.longitude],
-            GEOLOCATION_PATH_OPTIONS);
-          marker.bindPopup(mark.msg);
-          break;
-
-        case 'marker':
-          marker = Leaflet.marker([mark.coords.latitude, mark.coords.longitude], { icon: DEFAULT_ICON });
-          marker.bindPopup(mark.msg);
-          break;
-      }
-
-      this.group.addLayer(marker);
-      return marker;
-
-    });
-
-    const bounds = Leaflet.latLngBounds(markers.map(marker => marker.getLatLng()));
-
-    this.group.addTo(this.map);
-    this.map.fitBounds(bounds, { padding: [10, 10] });
-
-  }
 
   render() {
     const style = {
