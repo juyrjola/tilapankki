@@ -64,4 +64,9 @@ export default {
   TIME: {
     UPDATE: 'UPDATE_TIME',
   },
+  SESSION: {
+    REQUEST: 'SESSION_REQUEST',
+    SUCCESS: 'SESSION_SUCCESS',
+    FAILURE: 'SESSION_FAILURE',
+  },
 };

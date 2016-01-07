@@ -10,7 +10,7 @@ const initialState = Immutable({
 function authReducer(state = initialState, action) {
   switch (action.type) {
 
-    case 'SESSION.SUCCESS':
+    case types.SESSION.SUCCESS:
       if (action.payload.auth !== undefined) {
         return action.payload.auth;
       }

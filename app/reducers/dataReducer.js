@@ -65,7 +65,7 @@ function dataReducer(state = initialState, action) {
   case types.API.SEARCH_RESULTS_GET_SUCCESS:
   case types.API.UNITS_GET_SUCCESS:
     return handleData(state, action.payload.entities);
-  case 'SESSION.SUCCESS':
+  case types.SESSION.SUCCESS:
     if (action.payload.data !== undefined) {
       return handleData(state, action.payload.data);
     }
