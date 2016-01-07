@@ -81,16 +81,12 @@ export class UnconnectedResourcesList extends Component {
         )}
         <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
-            <Tabs defaultActiveKey={1}>
-              <Tab eventKey={1} title="Lista">
-                <ListGroup fill>
-                  {map(resources, this.renderResourcesListItem)}
-                </ListGroup>
-              </Tab>
-              <Tab eventKey={2} title="Kartta">
-                <MultiShotMap userPosition={geolocation} resources={resources} units={units} history={this.props.history} />
-              </Tab>
-            </Tabs>
+            <div>
+              <ListGroup fill>
+                {map(resources, this.renderResourcesListItem)}
+              </ListGroup>
+              <MultiShotMap userPosition={geolocation} resources={resources} units={units} history={this.props.history} />
+            </div>
           ) : (
             <ListGroup fill>
               <ListGroupItem>Vapaita tiloja ei valitettavasti löytynyt.</ListGroupItem>
