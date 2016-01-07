@@ -81,7 +81,7 @@ export class UnconnectedResourcesList extends Component {
         )}
         <Loader loaded={!isFetchingResources && geolocation.status === 'detected'}>
           {Object.keys(resources).length > 0 ? (
-            <Tabs defaultActiveKey={2}>
+            <Tabs defaultActiveKey={1}>
               <Tab eventKey={1} title="Lista">
                 <ListGroup fill>
                   {map(resources, this.renderResourcesListItem)}
