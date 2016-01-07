@@ -45,7 +45,7 @@ class Navbar extends Component {
     }
 
     return (
-      <NavItem target="tpLoginWindow" href="/login/helsinki">Kirjaudu sisään</NavItem>
+      <NavItem onClick={this.props.login} href="#!">Kirjaudu sisään</NavItem>
     );
   }
 

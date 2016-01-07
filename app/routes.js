@@ -13,8 +13,11 @@ import VicinityApp from 'containers/VicinityApp';
 import VicinityReservationPage from 'containers/VicinityReservationPage';
 import HelloPage from 'containers/Hello';
 import ResourcesList from 'containers/ResourcesList';
+import fetchUserFromSession from 'actions/sessionActions';
 
-export default (params) => {
+import loginWithCallback from 'utils/LoginUtils';
+
+export default (store) => {
   function removeFacebookAppendedHash(nextState, replaceState, cb) {
     if (window.location.hash && window.location.hash.indexOf('_=_') !== -1) {
       replaceState(null, window.location.hash.replace('_=_', ''));
@@ -22,17 +25,16 @@ export default (params) => {
     cb();
   }
 
-  function requireAuth(nextState, replaceState, cb) {
-    setTimeout(() => {
-      const { auth } = params.getState();
-
-      if (!auth.userId) {
-        // To be able to login to a page without the react router "/#/" hash we need to use
-        // the window.location.replace instead of the replaceState provided by react router.
-        window.open(`${window.location.origin}/login/helsinki`);
-      }
-      cb();
-    }, 0);
+  function requireAuth(nextState, replaceState, dispatchRoute) {
+    const { auth } = store.getState();
+    if (!auth.userId) {
+      loginWithCallback(() => {
+        store.dispatch(fetchUserFromSession())
+          .then(() => {dispatchRoute();});
+      });
+    } else {
+      dispatchRoute();
+    }
   }
 
   function scrollTop(nextState, replaceState, cb) {

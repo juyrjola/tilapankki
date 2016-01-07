@@ -6,6 +6,7 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
+import bind from 'lodash/function/bind';
 
 import { clearSearchResults } from 'actions/searchActions';
 import { fetchGeolocation } from 'actions/geolocationActions';
@@ -17,12 +18,20 @@ import Navbar from 'components/layout/VicinityNavBar';
 import Notifications from 'containers/Notifications';
 import appSelector from 'selectors/containers/appSelector';
 
+import loginWithCallback from 'utils/LoginUtils';
+
 export class UnconnectedApp extends Component {
   componentDidMount() {
     const { actions, isLoggedIn } = this.props;
     this.props.actions.updateTime();
     this.props.actions.fetchGeolocation();
     this.props.actions.fetchUserFromSession();
+  }
+
+  login() {
+    loginWithCallback(() => {
+      this.props.actions.fetchUserFromSession();
+    });
   }
 
   render() {
@@ -41,6 +50,7 @@ export class UnconnectedApp extends Component {
             clearSearchResults={actions.clearSearchResults}
             isLoggedIn={isLoggedIn}
             user={user}
+            login={bind(this.login, this)}
           />
           <Grid className="app-content">
               <Notifications />

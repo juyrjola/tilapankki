@@ -29,6 +29,8 @@ import TimeSlots from 'components/reservation/TimeSlots';
 import ReservationDeleteModal from 'containers/ReservationDeleteModal';
 import reservationFormSelector from 'selectors/containers/reservationFormSelector';
 
+import loginWithCallback from 'utils/LoginUtils';
+
 export class UnconnectedReservationForm extends Component {
   constructor(props) {
     super(props);
@@ -92,17 +94,13 @@ export class UnconnectedReservationForm extends Component {
     const { actions, selectedReservations, id, isLoggedIn } = this.props;
 
     if (!isLoggedIn) {
-      window.loginSuccessful = () => {
+      loginWithCallback(() => {
         if (selectedReservations && selectedReservations.length) {
           selectedReservations.forEach((reservation) => {
             actions.postPendingReservation(reservation);
           });
         }
-      };
-      window.open(
-        `${window.location.origin}/login/helsinki`,
-        'tpLoginWindow',
-        'location,scrollbars=on,width=720,height=600');
+      });
     } else {
       selectedReservations.forEach(reservation => {
         actions.postPendingReservation(Object.assign({}, reservation, values));
