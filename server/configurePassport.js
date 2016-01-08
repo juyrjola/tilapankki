@@ -7,7 +7,7 @@ function configurePassport() {
   let helsinkiStrategy;
   const callbackURL = (
     serverConfig.isProduction ?
-    'http://respa.hel.ninja/login/helsinki/return' :
+    'http://tilapankki.hel.ninja/login/helsinki/return' :
     `http://${serverConfig.ip}:${serverConfig.port}/login/helsinki/return`
   );
   helsinkiStrategy = new Strategy(
