@@ -148,7 +148,8 @@ function humanDistance(meters) {
     return '' + (Math.ceil(meters)) + 'm';
   }
   const val = Math.ceil(meters / 100).toString();
-  const [a, b] = val;//[val.slice(0, -1), val.slice(-1)];
+  const a = val.slice(0, -1);
+  const b = val.slice(-1);
   if (b !== '0') {
     return '' + a + '.' + b + 'km';
   }
