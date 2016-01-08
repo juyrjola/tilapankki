@@ -57,7 +57,8 @@ function handleReservation(state, action) {
 
 function dataReducer(state = initialState, action) {
   switch (action.type) {
-
+  case types.API.RESOURCES_CLEAR:
+      return state.merge({ resources: {}});
   case types.API.PURPOSES_GET_SUCCESS:
   case types.API.RESERVATIONS_GET_SUCCESS:
   case types.API.RESOURCE_GET_SUCCESS:

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePath } from 'redux-simple-router';
 
-import { fetchResources } from 'actions/resourceActions';
+import { fetchResources, clearResources } from 'actions/resourceActions';
 import { fetchUnits } from 'actions/unitActions';
 import ResourcesListItem from 'components/resource/ResourcesListItem';
 import MultiShotMap from './MultiShotMap';
@@ -17,6 +17,10 @@ export class UnconnectedResourcesList extends Component {
   constructor(props) {
     super(props);
     this.renderResourcesListItem = this.renderResourcesListItem.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.actions.clearResources();
   }
 
   componentDidMount() {
@@ -104,6 +108,7 @@ UnconnectedResourcesList.propTypes = {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     fetchResources,
+    clearResources,
     fetchUnits,
     updatePath,
   };

@@ -2,6 +2,7 @@ import { CALL_API } from 'redux-api-middleware';
 
 import types from 'constants/ActionTypes';
 import { paginatedResourcesSchema, resourceSchema } from 'middleware/Schemas';
+import { createAction } from 'redux-actions';
 import {
   buildAPIUrl,
   getErrorTypeDescriptor,
@@ -10,9 +11,12 @@ import {
   getSuccessTypeDescriptor,
 } from 'utils/APIUtils';
 
+const clearResources = createAction(types.API.RESOURCES_CLEAR);
+
 export default {
   fetchResource,
   fetchResources,
+  clearResources,
 };
 
 function fetchResource(id, params = {}) {

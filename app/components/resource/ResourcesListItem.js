@@ -94,7 +94,10 @@ class ResourcesListItem extends Component {
     const inline = {
       display: 'inline',
     };
-
+    let spatioTemporalDetails = null;
+    if (distance && resource.availableHours) {
+      spatioTemporalDetails = <Row>{this.renderDistance(distance)} {this.renderAvailableHours(resource.availableHours[0])}</Row>;
+    }
     return (
       <LinkContainer to={link}>
         <ListGroupItem>
@@ -103,7 +106,7 @@ class ResourcesListItem extends Component {
             <Row>
               <Col xs={9}>
                 <Row>{getName(unit)}</Row>
-                <Row>{this.renderDistance(distance)} {this.renderAvailableHours(resource.availableHours[0])}</Row>
+                {spatioTemporalDetails}
               </Col>
               <Col xs={3}>
                 {this.renderImage(getMainImage(resource.images))}
