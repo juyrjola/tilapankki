@@ -42,6 +42,7 @@ export class UnconnectedResourcesList extends Component {
       purpose: 'meetings-and-working',
       lat: geolocation.position.coords.latitude,
       lon: geolocation.position.coords.longitude,
+      need_manual_confirmation: 'false',
     };
     this.props.actions.fetchResources(params);
   }
