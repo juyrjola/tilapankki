@@ -6,10 +6,14 @@ import {
   getName
 } from 'utils/DataUtils';
 import pairs from 'lodash/object/pairs';
+import keys from 'lodash/object/keys';
 
 class MultiShotMap extends Component {
   render() {
     const { userPosition, resources_combined, units, history } = this.props;
+    if (units === undefined || keys(units).length == 0) {
+      return null;
+    }
 
     if (userPosition.status !== 'detected') {
       return null;
