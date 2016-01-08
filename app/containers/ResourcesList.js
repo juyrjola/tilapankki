@@ -25,13 +25,6 @@ export class UnconnectedResourcesList extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.geolocation.status === 'requested'
-    && nextProps.geolocation.status === 'detected') {
-      this.fetchRequiredResources();
-    }
-  }
-
   fetchRequiredResources() {
     const { time, geolocation } = this.props;
     this.props.actions.fetchUnits();

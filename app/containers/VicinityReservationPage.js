@@ -32,6 +32,7 @@ import {
   getPeopleCapacityString,
 } from 'utils/DataUtils';
 import ImagePanel from 'components/common/ImagePanel';
+import moment from 'moment';
 
 export class UnconnectedVicinityReservationPage extends Component {
   constructor(props) {
@@ -44,18 +45,24 @@ export class UnconnectedVicinityReservationPage extends Component {
   }
 
   componentDidMount() {
-    const { actions, date, time, id } = this.props;
-    const fetchParams = getDateStartAndEndTimes(date);
-    fetchParams.start = time;
-    actions.fetchResource(id, fetchParams);
+    const { actions, time, id } = this.props;
+    const params = {
+      start: time,
+      end: moment(time).add(8, 'hours').toISOString(),
+      duration: 30,
+    };
+    actions.fetchResource(id, params);
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.date !== this.props.date) {
-      const { actions, id } = this.props;
-      const fetchParams = getDateStartAndEndTimes(nextProps.date);
-
-      actions.fetchResource(id, fetchParams);
+    if (nextProps.time !== this.props.time) {
+      const { actions, time, id } = this.props;
+      const params = {
+        start: time,
+        end: moment(time).add(8, 'hours').toISOString(),
+        duration: 30,
+      };
+      actions.fetchResource(id, params);
     }
   }
 
