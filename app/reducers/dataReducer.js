@@ -66,10 +66,10 @@ function dataReducer(state = initialState, action) {
   case types.API.UNITS_GET_SUCCESS:
     return handleData(state, action.payload.entities);
   case types.SESSION.SUCCESS:
-    if (action.payload.data !== undefined) {
-      return handleData(state, action.payload.data);
+    if (action.payload.data === undefined) {
+      return state;
     }
-
+    return handleData(state, action.payload.data);
   case types.API.RESERVATION_POST_SUCCESS:
   case types.API.RESERVATION_PUT_SUCCESS:
     return handleReservation(state, action);
